@@ -1,29 +1,396 @@
 ---
-from: markdown+emoji
-format:
-  revealjs:
-    logo: images/logo-affiliation.png
-    footer: "{{< fa brands github >}} &nbsp;[`rdatatoolbox/r-functions`](https://github.com/rdatatoolbox/r-functions) &nbsp; &bull; &nbsp; {{< fa brands creative-commons >}} {{< fa brands creative-commons-by >}} &nbsp;[`cc-by-4.0`](https://creativecommons.org/licenses/by/4.0/deed.en)"
-    smaller: true
-    auto-stretch: false
-    chalkboard: true
-    toc-depth: 1
-    theme: [default, "styles/main.scss"]
-engine: knitr
+format: academica-revealjs
+
+title: "Writing R functions"
+subtitle: "Refactoring scripts into modular and reusable code"
+
+footer: >
+  {{< fa brands github >}} 
+  [`rdatatoolbox/course-functions`](https://github.com/rdatatoolbox/course-functions)
+  &nbsp; &bull; &nbsp;
+  {{< fa brands creative-commons >}} {{< fa brands creative-commons-by >}} 
+  [`CC BY 4.0`](https://creativecommons.org/licenses/by/4.0/deed.en)
+    
+image: "images/logo-title-slide.png"
+logo: "images/logo-affiliation.png"
+favicon: "images/favicon-32x32.png"
+
+lang: en
+date: today
+date-format: "MMMM YYYY"
+
+creators:
+  - name: "Nicolas Casajus"
+
+    position: "Senior data scientist"
+
+    socials:
+      email: "nicolas.casajus@fondationbiodiversite.fr"
+      website: "https://nicolascasajus.fr"
+      github: "https://github.com/ahasverus"
+      orcid: "0000-0002-5537-5294"
+      scholar: "https://scholar.google.fr/citations?user=n1swa1UAAAAJ"
+
+    affiliations:
+      - name: "FRB-CESAB"
+        url: "https://www.fondationbiodiversite.fr/en/about-the-foundation/le-cesab/"
 ---
 
-<!-- Insert section 'Title slide' -->
+## What is a function? {.size-sm}
 
-```{r}
-#| child: "sections/title-slide.qmd"
+A **reusable block of code** designed to perform a 
+**specific task**. It is executed when called, can take inputs 
+(arguments), and can return an output (a value).
+
+[]{.vspace-sm}
+
+::: {.width-50}
+
+```{.r}
+# Function definition ----
+add_two_values <- function(a, b) {
+  
+  c <- a + b
+  return(c)
+}
+
+
+# Function call ----
+add_two_values(3, 4)
+## [1] 7
 ```
 
+:::
 
 
 
-<!-- Insert section 'Quarto basics' -->
+## Why write functions? {.size-sm}
 
-```{r}
-#| child: "sections/main-slides.qmd"
+Automate repetitive tasks and improve code quality
+
+[]{.vspace-sm}
+
+::: {.grid .text-center}
+
+::: {.g-col-4 .box-shadow}
+[{{< fa repeat size=xl >}}]{style="color: #0D657D;"}
+
+[**DRY**]{style="color: #0D657D;"}<br>
+[Avoid code duplication]{.size-sm}
+:::
+
+::: {.g-col-4 .box-shadow}
+[{{< fa puzzle-piece size=xl >}}]{style="color: #805A35;"}
+
+[**Modularity**]{style="color: #805A35;"}<br>
+[Build reusable components]{.size-sm}
+:::
+
+::: {.g-col-4 .box-shadow}
+[{{< fa rotate size=xl >}}]{style="color: #38664B;"}
+
+[**Reproducibility**]{style="color: #38664B;"}<br>
+[Ensure consistent operations]{.size-sm}
+
+:::
+
+:::
+
+[]{.vspace-sm}
+
+[**Key benefits**]{style="color: #0D657D;"}
+
+- Improved readability
+- Easier maintenance
+- Fewer copy-and-paste errors
+- Increased productivity
+
+
+## Anatomy of a function {.size-sm}
+
+::: {.width-66}
+```{.r}
+function_name <- function(arg1, arg2 = default_value) {
+
+  # Body of the function that builds
+  # the result `output`
+
+  return(output)
+}
+```
+:::
+
+[]{.vspace-sm}
+
+[**Key components**]{style="color: #0D657D;"}
+
+- **Definition** - A function is defined using the `function()` keyword
+- **Name** - A function can have a meaningful and descriptive name
+- **Arguments** (inputs) - A function can take zero, one or multiple arguments
+- **Body** - The function body contains the instructions that are executed when 
+the function is called
+- **Return value** (output) - A function returns a value, either explicitly 
+using `return()` or implicitly through the last evaluated expression
+
+
+## Function workflow {.size-sm}
+
+::: {.grid}
+
+::: {.g-col-6}
+1. **Create an R script**[^rfile]
+<br>
+Create a `.R` file in the [R/]{.bg-important} directory
+:::
+
+::: {.g-col-6 style="margin-top: 0.5em;"}
+```{.r}
+file.create("R/add_two_values.R")
+```
+:::
+:::
+
+[]{.vspace-2xs}
+
+::: {.grid .fragment}
+
+::: {.g-col-6}
+2. **Define the function**
+<br>
+Write the function definition
+:::
+
+::: {.g-col-6 style="margin-top: 0.5em;"}
+```{.r}
+add_two_values <- function(a, b) {
+  a + b
+}
+```
+:::
+:::
+
+[]{.vspace-2xs}
+
+::: {.grid .fragment}
+
+::: {.g-col-6}
+3. **Source the file**
+<br>
+Load the function definition into R
+:::
+
+::: {.g-col-6 style="margin-top: 0.5em;"}
+```{.r}
+source("R/add_two_values.R")
+```
+:::
+:::
+
+[]{.vspace-2xs}
+
+::: {.grid .fragment}
+
+::: {.g-col-6}
+4. **Call the function**
+<br>
+Use the function in your script
+:::
+
+::: {.g-col-6 style="margin-top: 0.5em;"}
+```{.r}
+add_two_values(1050, 3234)
+```
+:::
+:::
+
+[^rfile]: You can define one function per `.R` file or group multiple functions in a single `.R` file
+
+
+## The R/ directory
+
+[]{.vspace-2xl}
+
+::: {.grid}
+
+::: {.g-col-2}
+:::
+
+::: {.g-col-8}
+::: {.callout-caution}
+## Important
+
+{{< fa circle-chevron-right size=xs >}}&nbsp; Do not rename the `R/` folder
+
+{{< fa circle-chevron-right size=xs >}}&nbsp; It should contain **function** definitions **only**, not analysis 
+or scripts
+
+{{< fa circle-chevron-right size=xs >}}&nbsp; **All function** definitions should be stored in the `R/` folder
+
+:::
+:::
+
+::: {.g-col-2}
+:::
+:::
+
+
+## Function arguments {.size-sm}
+
+Arguments define the inputs a function can receive.
+
+1. **Required arguments**: must be provided when calling the function.
+
+::: {.width-50}
+```{.r}
+add_two_values <- function(a, b) {
+  a + b
+}
+
+add_two_values(5, 10)
+```
+:::
+
+. . .
+
+2. **Default arguments**: have predefined values and can be omitted.
+
+::: {.width-50}
+```{.r}
+add_two_values <- function(a, b = 8) {
+  a + b
+}
+
+add_two_values(5)
+```
+:::
+
+. . .
+
+3. **Argument matching**: arguments can be passed by position or by name.
+
+::: {.width-50}
+```{.r}
+add_two_values(10, 5)
+add_two_values(b = 5, a = 10)
+```
+:::
+
+
+## Writing good functions {.size-sm}
+
+[]{.vspace-xl}
+
+::: {.grid .text-center}
+
+::: {.g-col-4}
+[{{< fa glasses size=xl >}}]{style="color: #0D657D;"}
+
+[**Readable**]{style="color: #0D657D;"}<br>
+[Meaningful names]{.size-sm}
+:::
+
+::: {.g-col-4}
+[{{< fa bullseye size=xl >}}]{style="color: #805A35;"}
+
+[**Focused**]{style="color: #805A35;"}<br>
+[One task per function]{.size-sm}
+:::
+
+::: {.g-col-4}
+[{{< fa angles-right size=xl >}}]{style="color: #38664B;"}
+
+[**Pipeable**]{style="color: #38664B;"}<br>
+[Write pipe-friendly functions]{.size-sm}
+:::
+
+:::
+
+[]{.vspace-xs}
+
+::: {.grid .text-center}
+
+::: {.g-col-2}
+:::
+
+::: {.g-col-4}
+[{{< fa shield-halved size=xl >}}]{style="color: #4A626B;"}
+
+[**Predictable**]{style="color: #4A626B;"}<br>
+[Minimize side effects]{.size-sm}
+:::
+
+::: {.g-col-4}
+[{{< fa circle-check size=xl >}}]{style="color: #963F39;"}
+
+[**Robust**]{style="color: #963F39;"}<br>
+[Validate inputs]{.size-sm}
+:::
+
+::: {.g-col-2}
+:::
+
+:::
+
+## Documenting a function {.size-sm}
+
+**Why document functions?**
+
+- Explain the **purpose** of a function
+
+- Describe its **arguments** and **return** values
+
+- Provide usage **examples**
+
+- Improve **readability** and maintainability
+
+
+## roxygen2 {.size-sm}
+
+::: {.grid}
+
+::: {.g-col-6}
+![](images/roxygen2-logo.png){width=50%}
+:::
+
+::: {.g-col-6 style="margin-top: 1em;"}
+- An R package used to document functions
+
+- Documentation is written directly **above** function definitions
+
+- Syntax: **`#' @field value`**
+
+. . . 
+
+[]{.vspace-2xs}
+
+```{.r}
+#' Add two values
+#'
+#' Adds two numeric values and returns their sum.
+#'
+#' @param a A numeric value of length 1.
+#' @param b A numeric value of length 1.
+#'
+#' @return A numeric value representing the sum 
+#'   of `a` and `b`.
+#'
+#' @examples
+#' add_two_values(2, 3)
+
+add_two_values <- function(a, b) {
+  a + b
+}
 ```
 
+:::
+
+:::
+
+
+## Resources {.size-sm}
+
+- Wickham H (2023) **Chap. 25: Functions**. In _R for Data Science_, (2nd ed.). [Online book](https://r4ds.hadley.nz/functions.html)
+- Wickham H (2019) **Chap. 6: Functions**. In _Advanced R_, (2nd ed.). [Online book](https://adv-r.hadley.nz/functions.html)
+- Wickham H & Bryan J (2023) **Chap. 16: Function documentation**. In _R Packages_, (2nd ed.). [Online book](https://r-pkgs.org/man.html)
+
+# Practice
