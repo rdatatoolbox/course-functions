@@ -1,2 +1,4 @@
 project:
   type: default
+  resources:
+      - "_extensions/frbcesab/academica/assets/orcid.svg"
