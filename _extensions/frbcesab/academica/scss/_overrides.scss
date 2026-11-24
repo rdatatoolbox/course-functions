@@ -1,0 +1,103 @@
+
+/* ========================================
+   ACADEMICA
+   REVEALJS OVERRIDES
+   ======================================== */
+
+
+/* ========================================
+   1. BOOTSTRAP / QUARTO COLORS
+   ======================================== */
+
+// Body
+$body-bg: $academica-color-background;
+$body-color: $academica-color-text;
+
+// Links
+$link-color: $academica-color-link;
+$link-color-hover: $academica-color-link-hover;
+
+// Selection
+$selection-bg: $academica-color-selection-background;
+$selection-color: $academica-color-selection-text;
+
+// Borders
+$border-color: $academica-border-color;
+$border-width: $academica-border-width;
+$border-radius: $academica-border-radius;
+
+
+/* ========================================
+   2. REVEALJS TYPOGRAPHY
+   ======================================== */
+
+// Font families
+$font-family-sans-serif: $academica-font-sans;
+$font-family-monospace: $academica-font-mono;
+
+$presentation-heading-font: $academica-font-sans;
+
+// Base typography
+$presentation-font-size-root: $academica-font-size-root;
+$presentation-font-smaller: 0.6;
+$presentation-line-height: $academica-line-height;
+
+// Heading sizes
+$presentation-h1-font-size: $academica-heading-size-h1;
+$presentation-h2-font-size: $academica-heading-size-h2;
+$presentation-h3-font-size: $academica-heading-size-h3;
+$presentation-h4-font-size: $academica-heading-size-h4;
+
+// Heading appearance
+$presentation-heading-color: $academica-color-text;
+$presentation-heading-line-height: $academica-heading-line-height;
+$presentation-heading-letter-spacing: $academica-heading-letter-spacing;
+$presentation-heading-text-transform: none;
+$presentation-heading-text-shadow: none;
+$presentation-heading-font-weight: $academica-heading-weight;
+$presentation-h1-text-shadow: none;
+
+
+/* ========================================
+   3. REVEALJS LAYOUT
+   ======================================== */
+
+$presentation-block-margin: 12px;
+
+$presentation-slide-text-align: left;
+$presentation-title-slide-text-align: center;
+
+
+/* ========================================
+   4. REVEALJS CODE BLOCKS
+   ======================================== */
+
+$code-block-bg: $academica-color-background;
+$code-block-border-color: lighten($academica-color-text, 60%);
+$code-block-font-size: 0.55em;
+
+
+/* ========================================
+   5. INLINE CODE
+   ======================================== */
+
+$code-color: $academica-color-code-text;
+$code-bg: $academica-color-code-background;
+
+
+/* ========================================
+   6. QUARTO CALLOUTS
+   ======================================== */
+
+$callout-color-note: $academica-color-note;
+$callout-color-important: $academica-color-important;
+$callout-color-warning: $academica-color-warning;
+$callout-color-tip: $academica-color-tip;
+$callout-color-caution: $academica-color-caution;
+
+
+/* ========================================
+   7. QUARTO TABSETS
+   ======================================== */
+
+$tabset-border-color: lighten($academica-color-text, 60%);

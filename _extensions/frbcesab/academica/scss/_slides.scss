@@ -1,0 +1,285 @@
+
+/* ========================================
+   ACADEMICA
+   SLIDE STYLES
+   ======================================== */
+
+
+/* ========================================
+   1. INVERSE SLIDE
+   ======================================== */
+
+.reveal .inverse {
+  background-color: #40666e;
+  color: #fff;
+
+  h1, h2, h3, h4, strong {
+    color: #fff;
+  }
+
+  a {
+    color: #fff;
+  }
+}
+
+
+// Hide presentation controls on inverse slides
+
+.reveal:has(.slides section.inverse.present) {
+
+  .slide-logo,
+  .slide-menu-button,
+  .slide-number,
+  .footer {
+    display: none !important;
+  }
+}
+
+
+/* ========================================
+   2. CUSTOM TITLE SLIDE
+   ======================================== */
+
+.reveal .slides section.title-slide-custom {
+  height: 100%;
+  max-height: 100%;
+  width: 1200px !important;
+  max-width: 1200px !important;
+  box-sizing: border-box;
+  left: 30% !important;
+  transform: translateX(-30%) !important;
+  padding: 0 !important;
+  display: flex;
+  align-items: stretch;
+  background: $academica-color-background;
+  color: $academica-color-text;
+  text-align: left;
+}
+
+
+// Title layout
+
+.title-layout {
+  display: grid;
+  grid-template-columns: 30% minmax(0, 70%);
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+
+// Logo container
+
+.title-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+// Logo image
+
+.title-logo img {
+  display: block;
+  max-width: 100%;
+  max-height: 65%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+
+// Title content
+
+.title-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  padding: 1.5em 2em 1.5em 1em;
+  box-sizing: border-box;
+}
+
+
+// Title heading
+
+.title-header h1 {
+  font-size: 1.4em;
+  font-weight: $academica-font-semibold;
+  color: $academica-color-text;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+
+// Subtitle
+
+.title-subtitle {
+  font-size: 0.9em !important;
+  font-weight: $academica-font-light !important;
+  color: $academica-color-secondary;
+  margin: 0 !important;
+  margin-top: 0.5em !important;
+  padding: 0;
+}
+
+
+// Title separator
+
+.title-separator {
+  width: 100%;
+  height: 0;
+  border-top: 1px solid lighten($academica-color-text, 35%);
+  opacity: 0.5;
+  margin: 0.5em 0;
+}
+
+
+// Date
+
+.title-date {
+  color: $academica-color-text;
+  font-size: 0.6em;
+  font-weight: $academica-font-lighter;
+  text-align: right;
+  margin-bottom: 1.4em;
+}
+
+
+// Authors container
+
+.title-authors {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.4em;
+  width: 100%;
+}
+
+
+// Individual author
+
+.title-author {
+  flex: 1 1 0;
+  min-width: 0;
+  text-align: left;
+}
+
+
+// Author name
+
+.author-name {
+  display: block;
+  color: $academica-color-text;
+  font-size: 0.75em;
+  font-weight: $academica-font-regular;
+  line-height: 1.3;
+  margin-bottom: 0.35em;
+}
+
+.author-name span {
+  display: inline;
+}
+
+
+// ORCID
+
+.author-orcid {
+  display: inline-block;
+  white-space: nowrap;
+  margin-left: 0.2em;
+  vertical-align: baseline;
+  line-height: 1;
+}
+
+.author-orcid img {
+  display: inline-block;
+  width: 1.05em;
+  height: 1.05em;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  margin: 0;
+}
+
+.author-orcid:hover {
+  opacity: 0.75;
+}
+
+
+// Social links
+
+.author-socials {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.2em;
+  margin: 0.3em 0;
+  font-size: 0.9em;
+}
+
+
+// Author links
+
+.title-author a {
+  color: $academica-color-link;
+  font-size: 0.65em;
+  text-decoration: none;
+
+  &:hover {
+    color: $academica-color-link-hover;
+  }
+}
+
+
+// Author role
+
+.author-role {
+  color: lighten($academica-color-text, 10%);
+  font-size: 0.65em;
+  font-weight: $academica-font-light;
+  line-height: 1.3;
+  margin-top: 1.3em !important;
+  margin-bottom: 0.5em !important;
+}
+
+
+// Affiliations
+
+.author-affiliations {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15em;
+}
+
+.author-affiliation {
+  color: lighten($academica-color-text, 10%);
+  font-size: 0.65em;
+  font-weight: $academica-font-regular;
+  line-height: 1.3;
+  margin-top: 0 !important;
+}
+
+
+// Affiliation website
+
+.affiliation-website {
+  display: inline-block;
+  white-space: nowrap;
+  margin-left: 0.3em;
+  color: $academica-color-link;
+  text-decoration: none;
+  vertical-align: 0.1em;
+
+  &:hover {
+    color: $academica-color-link-hover;
+  }
+}
+
+.affiliation-website i {
+  font-size: 1.15em;
+}

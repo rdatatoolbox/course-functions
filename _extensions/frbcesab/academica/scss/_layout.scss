@@ -1,0 +1,172 @@
+
+/* ========================================
+   ACADEMICA
+   LAYOUT STYLES
+   ======================================== */
+
+
+/* ========================================
+   1. COLUMNS
+   ======================================== */
+
+.reveal .slide .columns {
+  display: flex;
+  gap: 1em;
+  width: 100%;
+}
+
+.reveal .slide .columns > .column {
+  flex: 0 1 auto;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+
+/* ========================================
+   2. CONTENT WIDTH
+   ======================================== */
+
+// Width utilities
+
+.reveal {
+
+  .width-25,
+  p:has(.width-25) {
+    width: 25%;
+  }
+
+  .width-33,
+  p:has(.width-33) {
+    width: 33.333%;
+  }
+
+  .width-50,
+  p:has(.width-50) {
+    width: 50%;
+  }
+
+  .width-66,
+  p:has(.width-66) {
+    width: 66.667%;
+  }
+
+  .width-75,
+  p:has(.width-75) {
+    width: 75%;
+  }
+}
+
+
+/* ========================================
+   3. GRID SYSTEM
+   ======================================== */
+
+// Grid container
+
+.reveal .grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  width: 100%;
+  gap: 1rem;
+}
+
+
+// Grid column widths
+
+.reveal .grid {
+
+  > .g-col-1  { grid-column: span 1; }
+  > .g-col-2  { grid-column: span 2; }
+  > .g-col-3  { grid-column: span 3; }
+  > .g-col-4  { grid-column: span 4; }
+  > .g-col-5  { grid-column: span 5; }
+  > .g-col-6  { grid-column: span 6; }
+  > .g-col-7  { grid-column: span 7; }
+  > .g-col-8  { grid-column: span 8; }
+  > .g-col-9  { grid-column: span 9; }
+  > .g-col-10 { grid-column: span 10; }
+  > .g-col-11 { grid-column: span 11; }
+  > .g-col-12 { grid-column: span 12; }
+
+}
+
+
+// Grid gaps
+
+.reveal {
+  .g-gap-1 { gap: 0.5rem; }
+  .g-gap-2 { gap: 1.0rem; }
+  .g-gap-3 { gap: 1.5rem; }
+  .g-gap-4 { gap: 2.0rem; }
+}
+
+
+// Vertical alignment
+
+.reveal {
+  .g-align-start   { align-items: start; }
+  .g-align-center  { align-items: center; }
+  .g-align-end     { align-items: end; }
+  .g-align-stretch { align-items: stretch; }
+}
+
+
+// Horizontal alignment
+
+.reveal {
+  .g-justify-start   { justify-items: start; }
+  .g-justify-center  { justify-items: center; }
+  .g-justify-end     { justify-items: end; }
+  .g-justify-stretch { justify-items: stretch; }
+}
+
+
+// Grid cell
+
+.reveal .grid > .g-cell {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid $academica-color-secondary;
+  border-radius: $academica-border-radius;
+  padding: 0.75rem;
+}
+
+.reveal .grid > .g-cell p {
+  margin: 0.5em 0;
+}
+
+
+/* ========================================
+   4. HORIZONTAL POSITION
+   ======================================== */
+
+.reveal {
+
+  .left {
+    margin-right: auto;
+    text-align: initial;
+  }
+
+  .center {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: initial;
+  }
+
+  .right {
+    margin-left: auto;
+    text-align: initial;
+  }
+}
+
+
+/* ========================================
+   5. VERTICAL POSITION
+   ======================================== */
+
+.reveal .middle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 80%;
+}

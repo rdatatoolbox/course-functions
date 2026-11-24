@@ -1,0 +1,172 @@
+
+/* ========================================
+   ACADEMICA
+   UTILITY STYLES
+   ======================================== */
+
+
+/* ========================================
+   1. TYPOGRAPHY SIZING
+   ======================================== */
+
+.reveal {
+
+  .size-2xs { font-size: 0.60em !important; }
+  .size-xs  { font-size: 0.75em !important; }
+  .size-sm  { font-size: 0.875em !important; }
+  .size-md  { font-size: 1em !important; }
+  .size-lg  { font-size: 1.125em !important; }
+  .size-xl  { font-size: 1.25em !important; }
+  .size-2xl { font-size: 1.50em !important; }
+
+  // Ensure table typography inherits its parent size
+
+  :is(
+    .size-2xs,
+    .size-xs,
+    .size-sm,
+    .size-md,
+    .size-lg,
+    .size-xl,
+    .size-2xl
+  ) {
+
+    table,
+    th,
+    td {
+      font-size: inherit !important;
+    }
+
+  }
+
+}
+
+
+/* ========================================
+   2. VERTICAL SPACING
+   ======================================== */
+
+.reveal {
+
+  .vspace-2xs { display: block; height: 0.25em; }
+  .vspace-xs  { display: block; height: 0.50em; }
+  .vspace-sm  { display: block; height: 1em; }
+  .vspace-md  { display: block; height: 1.5em; }
+  .vspace-lg  { display: block; height: 2em; }
+  .vspace-xl  { display: block; height: 3em; }
+  .vspace-2xl { display: block; height: 4em; }
+
+}
+
+
+/* ========================================
+   3. TEXT ALIGNMENT
+   ======================================== */
+
+.reveal {
+
+  .text-left   { text-align: left; }
+  .text-center { text-align: center; }
+  .text-right  { text-align: right; }
+  .text-justify { text-align: justify; }
+
+}
+
+
+/* ========================================
+   4. COLORS
+   ======================================== */
+
+// Background colors
+
+.reveal {
+
+  .bg,
+  .bg-note {
+    background-color: $academica-color-secondary;
+  }
+
+  .bg-important {
+    background-color: $academica-color-accent;
+  }
+
+  .bg-tip {
+    background-color: $academica-color-primary;
+  }
+}
+
+
+// Foreground colors
+
+.reveal {
+
+  .fg,
+  .fg-note {
+    color: $academica-color-secondary;
+  }
+
+  .fg-important {
+    color: $academica-color-accent;
+  }
+
+  .fg-tip {
+    color: $academica-color-primary;
+  }
+}
+
+
+// Background text
+
+.reveal {
+
+  .bg-note,
+  .bg-important,
+  .bg-tip {
+    color: $academica-color-background;
+    font-weight: $academica-font-regular;
+    padding: 0.1em 0.35em;
+    margin: 0.02em;
+    border-radius: $academica-border-radius;
+  }
+}
+
+
+// Foreground text
+
+.reveal {
+
+  .fg-note,
+  .fg-important,
+  .fg-tip {
+    font-weight: $academica-font-semibold;
+    font-variant: small-caps;
+  }
+}
+
+
+/* ========================================
+   5. BORDERS
+   ======================================== */
+
+.reveal {
+
+  .no-border table,
+  .no-border table th,
+  .no-border table td {
+    border: none !important;
+  }
+}
+
+
+/* ========================================
+   6. SHADOWS
+   ======================================== */
+
+.reveal {
+
+  .box-shadow {
+    border: 1px solid lighten($academica-color-text, 50%);
+    box-shadow: $academica-shadow-md;
+    border-radius: $academica-border-radius-md !important;
+  }
+}

@@ -1,0 +1,98 @@
+
+/* ========================================
+   ACADEMICA
+   PRESENTATION CHROME
+   ======================================== */
+
+
+/* ========================================
+   1. SLIDE MENU BUTTON
+   ======================================== */
+
+.reveal .slide-menu-button {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  pointer-events: none;
+  filter: brightness(0) saturate(100%) invert(47%);
+}
+
+
+// Restore pointer events on menu controls
+
+.reveal .slide-menu-button > * {
+  pointer-events: auto;
+}
+
+
+/* ========================================
+   2. SLIDE LOGO
+   ======================================== */
+
+.reveal .slide-logo {
+  position: fixed !important;
+  left: 10px !important;
+  right: auto !important;
+  bottom: 0 !important;
+  top: auto !important;
+  max-height: 40px !important;
+  height: auto !important;
+  width: auto !important;
+}
+
+
+/* ========================================
+   3. FOOTER
+   ======================================== */
+
+.reveal .footer {
+  position: fixed;
+  bottom: 20px !important;
+}
+
+.reveal .footer p {
+  font-weight: $academica-font-regular;
+}
+
+
+// Footer links
+
+.reveal .footer a {
+  text-decoration: none;
+  font-weight: $academica-font-regular;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+
+/* ========================================
+   4. SLIDE NUMBERS
+   ======================================== */
+
+.reveal .slide-number,
+.reveal.has-logo .slide-number {
+  position: fixed !important;
+  bottom: 6px !important;
+  right: 10px !important;
+  top: unset !important;
+  color: $academica-footer-color !important;
+}
+
+
+// Slide number links
+
+.reveal .slide-number a {
+  position: fixed !important;
+  bottom: 22px !important;
+  right: 16px !important;
+  top: auto !important;
+  transform: none !important;
+  font-weight: $academica-font-light !important;
+  font-size: 0.9em !important;
+  text-decoration: none !important;
+}

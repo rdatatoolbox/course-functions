@@ -1,0 +1,199 @@
+
+/* ========================================
+   ACADEMICA
+   COMPONENT STYLES
+   ======================================== */
+
+
+/* ========================================
+   1. BLOCKQUOTES
+   ======================================== */
+
+.reveal .slide blockquote {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 1em 0;
+  padding: 1.2em 1.2em 0.8em 2.5em;
+  border: none;
+  border-radius: $academica-blockquote-radius;
+  box-shadow: $academica-blockquote-shadow;
+  background-color: $academica-blockquote-background;
+  color: $academica-blockquote-color;
+  font-size: 0.8em;
+  font-weight: $academica-font-regular !important;
+  text-align: left;
+}
+
+
+// Decorative quotation mark
+
+.reveal .slide blockquote::before {
+  content: "“";
+  position: absolute;
+  top: 0.15em;
+  left: 0.25em;
+  color: $academica-blockquote-accent;
+  font-family: Georgia, serif;
+  font-size: 2.5em;
+  font-weight: $academica-font-bold;
+  font-style: normal;
+  line-height: 1;
+}
+
+
+// Blockquote paragraph
+
+.reveal .slide blockquote p {
+  margin: 0;
+}
+
+
+// Quote author
+
+.reveal .slide blockquote .quote-author {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 0.8em;
+  padding: 0;
+  color: $academica-blockquote-accent;
+  font-size: 0.8em;
+  font-style: normal;
+  font-weight: $academica-font-semibold;
+  text-align: left;
+}
+
+
+// Quote source
+
+.reveal .slide blockquote .quote-source {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 0.2em;
+  padding: 0;
+  color: $academica-color-secondary;
+  font-size: 0.8em;
+  font-style: normal;
+  font-weight: $academica-font-lighter;
+  text-align: left;
+}
+
+
+/* ========================================
+   2. CALLOUTS
+   ======================================== */
+
+.reveal .callout {
+  box-shadow: $academica-callout-shadow;
+  border-radius: $academica-callout-radius !important;
+}
+
+
+// Callout title
+
+.reveal .callout-title p strong {
+  color: $academica-color-text !important;
+}
+
+
+// Callout typography
+
+.reveal .slide .callout-title {
+  font-size: 1.25em;
+}
+
+.reveal .slide .callout-content {
+  font-size: 1.2em;
+  line-height: 1.4;
+}
+
+
+/* ========================================
+   3. CODE BLOCKS
+   ======================================== */
+
+.reveal div.sourceCode {
+  margin-bottom: 1em !important;
+  box-shadow: $academica-shadow-md;
+  border-radius: $academica-border-radius-md !important;
+}
+
+
+/* ========================================
+   4. TABLES
+   ======================================== */
+
+.reveal .slide table thead th {
+  font-weight: $academica-font-regular;
+}
+
+.reveal .slide table tbody td {
+  font-weight: $academica-font-light;
+}
+
+
+// Tables inside typography sizing containers
+
+.reveal {
+
+  :is(
+    .size-2xs,
+    .size-xs,
+    .size-sm,
+    .size-md,
+    .size-lg,
+    .size-xl,
+    .size-2xl
+  ) {
+
+    table {
+
+      border-collapse: collapse !important;
+
+      th, td {
+        padding: 0.5em 0.35em !important;
+        line-height: 1.15 !important;
+        vertical-align: middle;
+      }
+
+      p {
+        margin: 0 !important;
+        padding: 0 !important;
+        line-height: inherit !important;
+      }
+    }
+  }
+}
+
+
+// Full-width tables
+
+.reveal .full-width-table table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+
+/* ========================================
+   5. FOOTNOTES
+   ======================================== */
+
+.reveal .slide aside {
+  position: absolute !important;
+  bottom: 0.3em;
+  left: 0;
+  width: 57%;
+  padding-top: 5px;
+  margin-bottom: 0;
+  border-top: 1px solid rgba($academica-color-text, 0.2);
+}
+
+
+// Footnote typography
+
+.reveal .slide .aside-footnotes {
+  font-size: 80% !important;
+}

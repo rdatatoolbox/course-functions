@@ -1,0 +1,165 @@
+
+/* ========================================
+   ACADEMICA
+   BASE STYLES
+   ======================================== */
+
+
+/* ========================================
+   1. HEADINGS
+   ======================================== */
+
+.reveal {
+
+  h1, h2 {
+    color: $academica-color-text;
+  }
+
+  h3, h4 {
+    color: $academica-color-secondary;
+  }
+
+  h2 {
+    padding-bottom: 10px;
+    border-bottom: 1px solid $academica-color-border-light;
+    margin-bottom: 1em !important;
+  }
+}
+
+
+/* ========================================
+   2. BODY TEXT
+   ======================================== */
+
+.reveal {
+
+  p {
+    font-weight: $academica-font-lighter;
+    font-size: 0.9em;
+    margin-top: 1em;
+  }
+}
+
+
+/* ========================================
+   3. LISTS
+   ======================================== */
+
+.reveal {
+
+  ul, ol {
+    font-weight: $academica-font-lighter;
+    font-size: 0.9em;
+    padding-left: 16px;
+  }
+
+  ul, ol {
+
+    li::marker {
+      color: mix($academica-color-primary, white, 80%);
+    }
+  }
+
+  ol li::marker {
+    font-weight: $academica-font-semibold;
+  }
+}
+
+
+/* ========================================
+   4. LINKS
+   ======================================== */
+
+.reveal {
+
+  a {
+    font-weight: $academica-font-regular;
+    text-decoration: underline;
+    text-decoration-color: rgba($academica-color-link, 0.4);
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+
+    transition:
+      color 0.2s ease,
+      text-decoration-color 0.2s ease,
+      text-decoration-thickness 0.2s ease;
+
+    &:hover {
+      color: $academica-color-link-hover;
+      text-decoration-color: $academica-color-link-hover;
+      text-decoration-thickness: 2px;
+    }
+  }
+}
+
+
+/* ========================================
+   5. TEXT EMPHASIS
+   ======================================== */
+
+.reveal {
+
+  strong, b {
+    font-weight: $academica-font-semibold;
+  }
+
+  em {
+    font-weight: $academica-font-light;
+  }
+
+  del {
+    text-decoration-thickness: 3px;
+  }
+}
+
+
+/* ========================================
+   6. INLINE CODE
+   ======================================== */
+
+.reveal :not(pre) > code {
+  padding: 0 5px;
+  border: 1px solid lighten($academica-color-code-text, 50%);
+  border-radius: $academica-border-radius;
+}
+
+
+/* ========================================
+   7. FIGURE CAPTIONS
+   ======================================== */
+
+.reveal .slide figure figcaption {
+  font-weight: $academica-font-lighter;
+  font-size: 0.65em;
+  color: $academica-figure-caption-color;
+  margin-top: 0 !important;
+  text-align: center;
+
+}
+
+
+// Figure alignment
+
+.reveal .slide .quarto-figure-center figure figcaption {
+  text-align: center !important;
+}
+
+.reveal .slide .quarto-figure-left figure figcaption {
+  text-align: left;
+}
+
+.reveal .slide .quarto-figure-right figure figcaption {
+  text-align: right;
+}
+
+
+/* ========================================
+   8. SUPERSCRIPTS
+   ======================================== */
+
+.reveal .slide sup {
+  color: $academica-color-primary;
+  font-size: 0.7em;
+  font-weight: $academica-font-semibold;
+  vertical-align: super;
+}
