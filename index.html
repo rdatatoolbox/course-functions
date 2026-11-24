@@ -6,24 +6,28 @@
 <script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="index_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <link href="index_files/libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
-<link href="index_files/libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet">
-<link href="index_files/libs/quarto-contrib/academicons-1.9.2/all.css" rel="stylesheet">
-<link href="index_files/libs/quarto-contrib/academicons-1.9.2/size.css" rel="stylesheet"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.26">
+<link href="index_files/libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.11.9">
 
-  <title>Writing functions</title>
+  <title>Writing R functions</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="index_files/libs/revealjs/dist/reset.css">
   <link rel="stylesheet" href="index_files/libs/revealjs/dist/reveal.css">
   <style>
-    code{white-space: pre-wrap;}
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -98,12 +102,10 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="index_files/libs/revealjs/dist/theme/quarto-2482a80e8fed937be72612e9dd34d75c.css">
+  <link rel="stylesheet" href="index_files/libs/revealjs/dist/theme/quarto-a93ce253d539115854a710c1fe233b66.css">
   <link href="index_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="index_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="index_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="index_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-  <link href="index_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
   <link href="index_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
@@ -116,6 +118,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -192,1654 +195,375 @@
       margin-right: 0; 
     }
   </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
 </head>
 <body class="quarto-light">
   <div class="reveal">
     <div class="slides">
 
+<section id="" class="title-slide-custom">
 
-<section class="slide level2">
+  <div class="title-layout">
 
-<!-- Insert section 'Title slide' -->
-<div class="title-slide-container">
-<div class="title-slide-content">
-<div class="columns">
-<!-- Title slide logo --><div class="column logo" style="width:32%;">
-<p><img data-src="images/logo-title-slide.png"></p>
-</div><!-- Title slide content --><div class="column information" style="width:68%;">
-<div class="title">
-<p>Code refactoring</p>
-</div>
-<div class="subtitle">
-<p>Writing and documenting <i class="fa-brands fa-r-project" aria-label="r-project"></i>&nbsp; functions</p>
-</div>
-<div class="date">
-<p>November 2025</p>
-</div>
-<div class="columns authors">
-<div class="column author" style="width:32%;">
-<p>Nicolas Casajus<br> <a href="mailto:rdev.nc@gmail.com"><i class="fa-solid fa-envelope" aria-label="envelope"></i></a> <a href="https://nicolascasajus.fr"><i class="fa-solid fa-globe" aria-label="globe"></i></a> <a href="https://github.com/ahasverus"><i class="fa-brands fa-github" aria-label="github"></i></a> <a href="https://orcid.org/0000-0002-5537-5294"><i class="fa-brands fa-orcid" aria-label="orcid"></i></a> <a href="https://scholar.google.fr/citations?user=n1swa1UAAAAJ"><i class="ai  ai-google-scholar"></i></a></p>
-</div><!-- Second author --><div class="column author" style="width:32%;">
-<!--
-Author name<br/>
-[](mailto:author-email)
-[](author-website)
-[](author-github)
-[](author-orcid)
--->
-</div><!-- Third author --><div class="column author" style="width:32%;">
-<!--
-Author name<br/>
-[](mailto:author-email)
-[](author-website)
-[](author-github)
-[](author-orcid)
--->
-</div><!-- Close {.columns .authors} -->
-</div>
-<div class="columns affiliations">
-<div class="column affiliation" style="width:32%;">
-<p>Senior data scientist <br> <code><span class="citation" data-cites="FRB-CESAB">@FRB-CESAB</span></code> &nbsp; <a href="https://www.fondationbiodiversite.fr/en/about-the-foundation/le-cesab/"><i class="fa-solid fa-globe" aria-label="globe"></i></a> &nbsp; <a href="https://github.com/frbcesab"><i class="fa-brands fa-github" aria-label="github"></i></a></p>
-</div><!-- Second affiliation --><div class="column affiliation" style="width:32%;">
-<!--
- &nbsp;[Affiliation](affiliation-url)
--->
-</div><!-- Third affiliation --><div class="column affiliation" style="width:32%;">
-<!--
- &nbsp;[Affiliation](affiliation-url)
--->
-</div><!-- Close {.columns .affiliations} -->
-</div>
-<!-- Close {.column .information} -->
-</div><!-- Close {.columns} -->
-</div>
-<!-- Close {.title-slide-content} -->
-</div>
-<!-- Close {.title-slide-container} -->
-</div>
-<!-- Insert section 'Quarto basics' -->
+    <!-- LEFT: LOGO -->
+    <div class="title-logo">
+      <img src="images/logo-title-slide.png" alt="Presentation logo">
+    </div>
+
+    <!-- RIGHT: CONTENT -->
+    <div class="title-content">
+
+      <header class="title-header">
+        <h1>Writing R functions</h1>
+
+                <p class="title-subtitle">Refactoring scripts into modular and reusable code</p>
+              </header>
+
+      <div class="title-separator"></div>
+
+            <div class="title-date">
+        November 2026
+      </div>
+      
+      <!-- AUTHORS -->
+      <div class="title-authors">
+
+        
+        <div class="title-author">
+
+          <div class="author-name">
+            <span>Nicolas Casajus</span>
+
+                        <a class="author-orcid" href="https://orcid.org/0000-0002-5537-5294" target="_blank" rel="noopener noreferrer" aria-label="ORCID profile">
+              <img src="_extensions/frbcesab/academica/assets/orcid.svg" alt="ORCID">
+            </a>
+                      </div>
+
+          <!-- AUTHOR SOCIALS -->
+          <div class="author-socials">
+
+                        <a href="mailto:nicolas.casajus@fondationbiodiversite.fr" aria-label="Email">
+              <i class="fa-solid fa-envelope"></i>
+            </a>
+                        
+                        <a href="https://nicolascasajus.fr" aria-label="Website">
+              <i class="fa-solid fa-globe"></i>
+            </a>
+            
+                        <a href="https://github.com/ahasverus" aria-label="GitHub">
+              <i class="fa-brands fa-github"></i>
+            </a>
+            
+                        <a href="https://scholar.google.fr/citations?user=n1swa1UAAAAJ" aria-label="Google Scholar">
+              <i class="fa-brands fa-google-scholar"></i>
+            </a>
+            
+          </div>
+
+                    <div class="author-role">
+            Senior data scientist
+          </div>
+          
+          <!-- AFFILIATIONS -->
+          <div class="author-affiliations">
+
+                        <div class="author-affiliation">
+              <span>FRB-CESAB</span>
+              
+                            <a class="affiliation-website" href="https://www.fondationbiodiversite.fr/en/about-the-foundation/le-cesab/" target="_blank" rel="noopener noreferrer" aria-label="Affiliation website"><i class="fa-solid fa-up-right-from-square"></i>
+              </a>
+              
+            </div>
+            
+          </div>
+
+        </div>
+
+        
+      </div>
+
+    </div>
+
+  </div>
+
 </section>
-<section id="whats-a-function" class="slide level2">
-<h2>What’s a function?</h2>
-<div class="fragment">
-<blockquote>
-<p>A function is a <strong>block of code</strong> organized together to perform a <strong>specific task</strong> and only runs when it is called. It can have <strong>parameters</strong> and can <strong>return</strong> a result.</p>
-</blockquote>
-<p><br></p>
+<section id="what-is-a-function" class="slide level2 size-sm">
+<h2>What is a function?</h2>
+<p>A <strong>reusable block of code</strong> designed to perform a <strong>specific task</strong>. It is executed when called, can take inputs (arguments), and can return an output (a value).</p>
+<p><span class="vspace-sm"></span></p>
+<div class="width-50">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="" aria-label="1"></a><span class="co"># Function definition ----</span></span>
+<span id="cb1-2"><a href="" aria-label="2"></a>add_two_values <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b) {</span>
+<span id="cb1-3"><a href="" aria-label="3"></a>  </span>
+<span id="cb1-4"><a href="" aria-label="4"></a>  c <span class="ot">&lt;-</span> a <span class="sc">+</span> b</span>
+<span id="cb1-5"><a href="" aria-label="5"></a>  <span class="fu">return</span>(c)</span>
+<span id="cb1-6"><a href="" aria-label="6"></a>}</span>
+<span id="cb1-7"><a href="" aria-label="7"></a></span>
+<span id="cb1-8"><a href="" aria-label="8"></a></span>
+<span id="cb1-9"><a href="" aria-label="9"></a><span class="co"># Function call ----</span></span>
+<span id="cb1-10"><a href="" aria-label="10"></a><span class="fu">add_two_values</span>(<span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb1-11"><a href="" aria-label="11"></a><span class="do">## [1] 7</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div class="fragment">
-<p><i class="fa-solid fa-circle-right" aria-label="circle-right"></i> &nbsp;<strong>Automate</strong> common and repetitive tasks</p>
+</section>
+<section id="why-write-functions" class="slide level2 size-sm">
+<h2>Why write functions?</h2>
+<p>Automate repetitive tasks and improve code quality</p>
+<p><span class="vspace-sm"></span></p>
+<div class="grid text-center">
+<div class="g-col-4 box-shadow">
+<p><span style="color: #0D657D;"><i class="fa-solid fa-repeat fa-xl" aria-label="repeat"></i></span></p>
+<p><span style="color: #0D657D;"><strong>DRY</strong></span><br> <span class="size-sm">Avoid code duplication</span></p>
 </div>
-<div class="fragment">
-<p><i class="fa-solid fa-circle-right" aria-label="circle-right"></i> &nbsp;Increase <strong>reproducibility</strong> and <strong>readability</strong> of the code</p>
+<div class="g-col-4 box-shadow">
+<p><span style="color: #805A35;"><i class="fa-solid fa-puzzle-piece fa-xl" aria-label="puzzle-piece"></i></span></p>
+<p><span style="color: #805A35;"><strong>Modularity</strong></span><br> <span class="size-sm">Build reusable components</span></p>
 </div>
-<div class="fragment">
-<p><br><br></p>
-<p><strong>Advantages</strong><sup>1</sup></p>
+<div class="g-col-4 box-shadow">
+<p><span style="color: #38664B;"><i class="fa-solid fa-rotate fa-xl" aria-label="rotate"></i></span></p>
+<p><span style="color: #38664B;"><strong>Reproducibility</strong></span><br> <span class="size-sm">Ensure consistent operations</span></p>
+</div>
+</div>
+<p><span class="vspace-sm"></span></p>
+<p><span style="color: #0D657D;"><strong>Key benefits</strong></span></p>
 <ul>
-<li>You can give a function an <strong>evocative name</strong> that makes your code easier to understand.</li>
-<li>As requirements change, you only need to <strong>update code in one place</strong>, instead of many.</li>
-<li>You <strong>eliminate</strong> the chance of making <strong>incidental mistakes</strong> when you copy and paste.</li>
-<li>It makes it <strong>easier to reuse</strong> work from project-to-project, increasing your productivity over time.</li>
+<li>Improved readability</li>
+<li>Easier maintenance</li>
+<li>Fewer copy-and-paste errors</li>
+<li>Increased productivity</li>
 </ul>
-</div>
-<aside><ol class="aside-footnotes"><li id="fn1"><p>R for Data Science (2<sup>e</sup> ed.) <a href="https://r4ds.hadley.nz/functions.html" class="uri">https://r4ds.hadley.nz/functions.html</a></p></li></ol></aside></section>
-<section id="when-to-write-a-function" class="slide level2">
-<h2>When to write a function?</h2>
-<p><br><br></p>
-<div class="center">
-<div class="boxed">
-<p><strong>Same code reused twice</strong> <br> (do not repeat yourself)</p>
-</div>
-<p><em>and/or</em></p>
-<div class="boxed">
-<p><strong>Reduce code complexity</strong> <br> (workflow modularity)</p>
-</div>
-<p><em>and/or</em></p>
-<div class="boxed">
-<p><strong>Improve code organisation</strong> <br> (workflow readability)</p>
-</div>
-</div>
 </section>
-<section id="writing-a-function" class="slide level2">
-<h2>Writing a function</h2>
-<div class="columns">
-<div class="column" style="width:45%;">
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="do">## Function definition ----</span></span>
-<span id="cb1-2"><a href=""></a></span>
-<span id="cb1-3"><a href=""></a>function_name <span class="ot">&lt;-</span> <span class="cf">function</span>(input) {</span>
-<span id="cb1-4"><a href=""></a>  </span>
-<span id="cb1-5"><a href=""></a>  <span class="co"># Body </span></span>
-<span id="cb1-6"><a href=""></a>  <span class="co"># of the function</span></span>
-<span id="cb1-7"><a href=""></a>  </span>
-<span id="cb1-8"><a href=""></a>  <span class="fu">return</span>(output)</span>
-<span id="cb1-9"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="anatomy-of-a-function" class="slide level2 size-sm">
+<h2>Anatomy of a function</h2>
+<div class="width-66">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="" aria-label="1"></a>function_name <span class="ot">&lt;-</span> <span class="cf">function</span>(arg1, <span class="at">arg2 =</span> default_value) {</span>
+<span id="cb2-2"><a href="" aria-label="2"></a></span>
+<span id="cb2-3"><a href="" aria-label="3"></a>  <span class="co"># Body of the function that builds</span></span>
+<span id="cb2-4"><a href="" aria-label="4"></a>  <span class="co"># the result `output`</span></span>
+<span id="cb2-5"><a href="" aria-label="5"></a></span>
+<span id="cb2-6"><a href="" aria-label="6"></a>  <span class="fu">return</span>(output)</span>
+<span id="cb2-7"><a href="" aria-label="7"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</div><div class="column" style="width:10%;">
-
-</div><div class="column" style="width:45%;">
+<p><span class="vspace-sm"></span></p>
+<p><span style="color: #0D657D;"><strong>Key components</strong></span></p>
 <ul>
-<li>A function is defined by calling <strong><code>function()</code></strong></li>
-<li>A function can have a (evocative) <strong>name</strong><sup>1</sup></li>
-<li>A function can have 0, 1 or many <strong>arguments</strong> (inputs)</li>
-<li>A function can <strong>return</strong> a value (output)</li>
+<li><strong>Definition</strong> - A function is defined using the <code>function()</code> keyword</li>
+<li><strong>Name</strong> - A function can have a meaningful and descriptive name</li>
+<li><strong>Arguments</strong> (inputs) - A function can take zero, one or multiple arguments</li>
+<li><strong>Body</strong> - The function body contains the instructions that are executed when the function is called</li>
+<li><strong>Return value</strong> (output) - A function returns a value, either explicitly using <code>return()</code> or implicitly through the last evaluated expression</li>
 </ul>
-</div></div>
-<aside><ol class="aside-footnotes"><li id="fn2"><p>In <i class="fa-brands fa-r-project" aria-label="r-project"></i>&nbsp; there is also <strong>anonymous functions</strong> (also known as <strong>lambda functions</strong>):<br><code>function(x) sum(x) / length(x)</code><br>or in short: <code>\(x) sum(x) / length(x)</code></p></li></ol></aside></section>
-<section id="writing-a-function-1" class="slide level2">
-<h2>Writing a function</h2>
-<div class="columns">
-<div class="column" style="width:45%;">
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="do">## Function definition ----</span></span>
-<span id="cb2-2"><a href=""></a></span>
-<span id="cb2-3"><a href=""></a>function_name <span class="ot">&lt;-</span> <span class="cf">function</span>(input) {</span>
-<span id="cb2-4"><a href=""></a>  </span>
-<span id="cb2-5"><a href=""></a>  <span class="co"># Body </span></span>
-<span id="cb2-6"><a href=""></a>  <span class="co"># of the function</span></span>
-<span id="cb2-7"><a href=""></a>  </span>
-<span id="cb2-8"><a href=""></a>  <span class="fu">return</span>(output)</span>
-<span id="cb2-9"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="function-workflow" class="slide level2 size-sm scrollable">
+<h2>Function workflow</h2>
+<div class="grid">
+<div class="g-col-6">
+<ol type="1">
+<li><strong>Create an R script</strong><sup>1</sup> <br> Create a <code>.R</code> file in the <span class="bg-important">R/</span> directory</li>
+</ol>
 </div>
-</div><div class="column" style="width:10%;">
+<div class="g-col-6" style="margin-top: 0.5em;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-label="1"></a><span class="fu">file.create</span>(<span class="st">"R/add_two_values.R"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<p><span class="vspace-2xs"></span></p>
+<div class="grid fragment">
+<div class="g-col-6">
+<ol start="2" type="1">
+<li><strong>Define the function</strong> <br> Write the function definition</li>
+</ol>
+</div>
+<div class="g-col-6" style="margin-top: 0.5em;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="" aria-label="1"></a>add_two_values <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b) {</span>
+<span id="cb4-2"><a href="" aria-label="2"></a>  a <span class="sc">+</span> b</span>
+<span id="cb4-3"><a href="" aria-label="3"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<p><span class="vspace-2xs"></span></p>
+<div class="grid fragment">
+<div class="g-col-6">
+<ol start="3" type="1">
+<li><strong>Source the file</strong> <br> Load the function definition into R</li>
+</ol>
+</div>
+<div class="g-col-6" style="margin-top: 0.5em;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="" aria-label="1"></a><span class="fu">source</span>(<span class="st">"R/add_two_values.R"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<p><span class="vspace-2xs"></span></p>
+<div class="grid fragment">
+<div class="g-col-6">
+<ol start="4" type="1">
+<li><strong>Call the function</strong> <br> Use the function in your script</li>
+</ol>
+</div>
+<div class="g-col-6" style="margin-top: 0.5em;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="" aria-label="1"></a><span class="fu">add_two_values</span>(<span class="dv">1050</span>, <span class="dv">3234</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>You can define one function per <code>.R</code> file or group multiple functions in a single <code>.R</code> file</p></li></ol></aside></section>
+<section id="the-r-directory" class="slide level2">
+<h2>The R/ directory</h2>
+<p><span class="vspace-2xl"></span></p>
+<div class="grid">
+<div class="g-col-2">
 
-</div><div class="column" style="width:45%;">
-<ul>
-<li>A function is defined by calling <strong><code>function()</code></strong></li>
-<li>A function can have a (evocative) <strong>name</strong></li>
-<li>A function can have 0, 1 or many <strong>arguments</strong> (inputs)</li>
-<li>A function can <strong>return</strong> a value (output)</li>
-</ul>
-</div></div>
-<p><br><br><br></p>
-<div class="boxed">
-<p>Always <strong>save your functions in</strong> the folder <strong><code>R/</code></strong><sup>1</sup></p>
 </div>
-<aside><ol class="aside-footnotes"><li id="fn3"><p>The folder <strong><code>R/</code></strong> must contain <strong>only functions</strong> (no script)</p></li></ol></aside></section>
-<section id="writing-a-function-2" class="slide level2">
-<h2>Writing a function</h2>
-<div class="columns">
-<div class="column" style="width:45%;">
-<p><strong>1. Define</strong> the function</p>
-</div><div class="column" style="width:10%;">
+<div class="g-col-8">
+<div class="callout callout-caution callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p><i class="fa-solid fa-circle-chevron-right fa-xs" aria-label="circle-chevron-right"></i>&nbsp; Do not rename the <code>R/</code> folder</p>
+<p><i class="fa-solid fa-circle-chevron-right fa-xs" aria-label="circle-chevron-right"></i>&nbsp; It should contain <strong>function</strong> definitions <strong>only</strong>, not analysis or scripts</p>
+<p><i class="fa-solid fa-circle-chevron-right fa-xs" aria-label="circle-chevron-right"></i>&nbsp; <strong>All function</strong> definitions should be stored in the <code>R/</code> folder</p>
+</div>
+</div>
+</div>
+</div>
+<div class="g-col-2">
 
-</div><div class="column" style="width:45%;">
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="do">## Function definition ----</span></span>
-<span id="cb3-2"><a href=""></a></span>
-<span id="cb3-3"><a href=""></a>arithmetic_mean <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb3-4"><a href=""></a>  </span>
-<span id="cb3-5"><a href=""></a>  y <span class="ot">&lt;-</span> <span class="fu">sum</span>(x) <span class="sc">/</span> <span class="fu">length</span>(x)</span>
-<span id="cb3-6"><a href=""></a>  </span>
-<span id="cb3-7"><a href=""></a>  <span class="fu">return</span>(y)</span>
-<span id="cb3-8"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</div></div>
-<div class="fragment">
-<p><br></p>
-<div class="columns">
-<div class="column" style="width:45%;">
-<p><strong>2. Save &amp; source</strong> the file</p>
-</div><div class="column" style="width:10%;">
-
-</div><div class="column" style="width:45%;">
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="do">## Function load ----</span></span>
-<span id="cb4-2"><a href=""></a></span>
-<span id="cb4-3"><a href=""></a><span class="fu">source</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"R"</span>, <span class="st">"arithmetic-mean.R"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div></div>
-</div>
-<div class="fragment">
-<p><br></p>
-<div class="columns">
-<div class="column" style="width:45%;">
-<p><strong>3. Use (call)</strong> the function</p>
-</div><div class="column" style="width:10%;">
-
-</div><div class="column" style="width:45%;">
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="do">## Function call ----</span></span>
-<span id="cb5-2"><a href=""></a></span>
-<span id="cb5-3"><a href=""></a><span class="fu">arithmetic_mean</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">5</span>, <span class="dv">10</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div></div>
-</div>
-<div class="fragment">
-<p><br><br></p>
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; Do not forget to <strong>source the file each time</strong> you modify the function</p>
 </div>
 </section>
-<section id="exiting-a-function" class="slide level2">
-<h2>Exiting a function</h2>
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; Functions exit in two ways</p>
-<p><br><br></p>
-<div class="columns">
-<div class="column" style="width:45%;">
-<div class="center">
-<p><span class="green"><i class="fa-solid fa-check fa-2xl" aria-label="check"></i></span></p>
-<p><br></p>
-<p><strong>Success</strong></p>
-<p>i.e.&nbsp;return a value w/ <strong><code>return()</code></strong></p>
-</div>
-</div><div class="column" style="width:10%;">
-
-</div><div class="column" style="width:45%;">
-<div class="center">
-<p><span class="red"><i class="fa-solid fa-xmark fa-2xl" aria-label="xmark"></i></span></p>
-<p><br></p>
-<p><strong>Failure</strong></p>
-<p>i.e.&nbsp;throw an error w/ <strong><code>stop()</code></strong></p>
-</div>
-</div></div>
-</section>
-<section id="function-return" class="slide level2">
-<h2>Function return</h2>
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; A function only <strong>returns one single object</strong></p>
-<p><br></p>
-<div class="columns">
-<div class="column center" style="width:45%;">
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a>arithmetic_mean <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb6-2"><a href=""></a>  </span>
-<span id="cb6-3"><a href=""></a>  y <span class="ot">&lt;-</span> <span class="fu">sum</span>(x) <span class="sc">/</span> <span class="fu">length</span>(x)</span>
-<span id="cb6-4"><a href=""></a>  </span>
-<span id="cb6-5"><a href=""></a>  <span class="fu">return</span>(y)</span>
-<span id="cb6-6"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column center" style="width:10%;">
-
-</div><div class="column center" style="width:45%;">
-
-</div></div>
-<div class="fragment">
-<p><br></p>
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; Use <strong><code>list()</code></strong> if you want to return more that one object</p>
-<p><br></p>
-<div class="columns">
-<div class="column center" style="width:45%;">
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a>function_name <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb7-2"><a href=""></a>  </span>
-<span id="cb7-3"><a href=""></a>  <span class="co"># ...</span></span>
-<span id="cb7-4"><a href=""></a></span>
-<span id="cb7-5"><a href=""></a>  result <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb7-6"><a href=""></a>    object_1,</span>
-<span id="cb7-7"><a href=""></a>    object_2,</span>
-<span id="cb7-8"><a href=""></a>    ...</span>
-<span id="cb7-9"><a href=""></a>  )</span>
-<span id="cb7-10"><a href=""></a>  </span>
-<span id="cb7-11"><a href=""></a>  <span class="fu">return</span>(result)</span>
-<span id="cb7-12"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column center" style="width:10%;">
-
-</div><div class="column center" style="width:45%;">
-
-</div></div>
-</div>
-</section>
-<section id="function-return-1" class="slide level2">
-<h2>Function return</h2>
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; In most cases, you can <strong>omit</strong> the keyword <strong><code>return()</code></strong>: this is called an <strong>implicit return</strong></p>
-<div class="fragment">
-<p><br></p>
-<div class="columns">
-<div class="column center" style="width:33%;">
-<p><span class="small"><strong>Explicit return</strong></span></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a>arithmetic_mean <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb8-2"><a href=""></a>  </span>
-<span id="cb8-3"><a href=""></a>  y <span class="ot">&lt;-</span> <span class="fu">sum</span>(x) <span class="sc">/</span> <span class="fu">length</span>(x)</span>
-<span id="cb8-4"><a href=""></a>  </span>
-<span id="cb8-5"><a href=""></a>  <span class="fu">return</span>(y)</span>
-<span id="cb8-6"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column center" style="width:33%;">
-<p><span class="small"><strong>Implicit return</strong></span></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>arithmetic_mean <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb9-2"><a href=""></a>  </span>
-<span id="cb9-3"><a href=""></a>  y <span class="ot">&lt;-</span> <span class="fu">sum</span>(x) <span class="sc">/</span> <span class="fu">length</span>(x)</span>
-<span id="cb9-4"><a href=""></a>  </span>
-<span id="cb9-5"><a href=""></a>  y</span>
-<span id="cb9-6"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column center" style="width:33%;">
-
-</div></div>
-</div>
-</section>
-<section id="function-return-2" class="slide level2">
-<h2>Function return</h2>
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; In most cases, you can <strong>omit</strong> the keyword <strong><code>return()</code></strong>: this is called an <strong>implicit return</strong></p>
-<p><br></p>
-<div class="columns">
-<div class="column center" style="width:33%;">
-<p><span class="small"><strong>Explicit return</strong></span></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a>arithmetic_mean <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb10-2"><a href=""></a>  </span>
-<span id="cb10-3"><a href=""></a>  y <span class="ot">&lt;-</span> <span class="fu">sum</span>(x) <span class="sc">/</span> <span class="fu">length</span>(x)</span>
-<span id="cb10-4"><a href=""></a>  </span>
-<span id="cb10-5"><a href=""></a>  <span class="fu">return</span>(y)</span>
-<span id="cb10-6"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column center" style="width:33%;">
-<p><span class="small"><strong>Implicit return</strong></span></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a>arithmetic_mean <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb11-2"><a href=""></a>  </span>
-<span id="cb11-3"><a href=""></a>  y <span class="ot">&lt;-</span> <span class="fu">sum</span>(x) <span class="sc">/</span> <span class="fu">length</span>(x)</span>
-<span id="cb11-4"><a href=""></a>  </span>
-<span id="cb11-5"><a href=""></a>  y</span>
-<span id="cb11-6"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column center" style="width:33%;">
-<p><span class="small"><strong>Implicit return &amp; simplification</strong></span></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a>arithmetic_mean <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb12-2"><a href=""></a>  </span>
-<span id="cb12-3"><a href=""></a>  <span class="fu">sum</span>(x) <span class="sc">/</span> <span class="fu">length</span>(x)</span>
-<span id="cb12-4"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div></div>
-</section>
-<section id="function-return-3" class="slide level2">
-<h2>Function return</h2>
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; But sometimes, you need an <strong>explicit return</strong></p>
-<div class="fragment">
-<p><br></p>
-<div class="columns">
-<div class="column center" style="width:45%;">
-<p><span class="small"><strong>Explicit returns</strong></span></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a>arithmetic_mean <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb13-2"><a href=""></a>  </span>
-<span id="cb13-3"><a href=""></a>  <span class="cf">if</span> (<span class="fu">any</span>(<span class="fu">is.na</span>(x))) {</span>
-<span id="cb13-4"><a href=""></a></span>
-<span id="cb13-5"><a href=""></a>    <span class="fu">return</span>(<span class="dv">0</span>)</span>
-<span id="cb13-6"><a href=""></a>  }</span>
-<span id="cb13-7"><a href=""></a></span>
-<span id="cb13-8"><a href=""></a>  y <span class="ot">&lt;-</span> <span class="fu">sum</span>(x) <span class="sc">/</span> <span class="fu">length</span>(x)</span>
-<span id="cb13-9"><a href=""></a>  </span>
-<span id="cb13-10"><a href=""></a>  <span class="fu">return</span>(y)</span>
-<span id="cb13-11"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column center" style="width:10%;">
-
-</div><div class="column center" style="width:45%;">
-<p><span class="small"><strong>WRONG behaviour</strong></span></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a>arithmetic_mean <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb14-2"><a href=""></a>  </span>
-<span id="cb14-3"><a href=""></a>  <span class="cf">if</span> (<span class="fu">any</span>(<span class="fu">is.na</span>(x))) {</span>
-<span id="cb14-4"><a href=""></a></span>
-<span id="cb14-5"><a href=""></a>    <span class="dv">0</span></span>
-<span id="cb14-6"><a href=""></a>  }</span>
-<span id="cb14-7"><a href=""></a></span>
-<span id="cb14-8"><a href=""></a>  <span class="fu">sum</span>(x) <span class="sc">/</span> <span class="fu">length</span>(x)</span>
-<span id="cb14-9"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div></div>
+<section id="function-arguments" class="slide level2 size-sm scrollable">
+<h2>Function arguments</h2>
+<p>Arguments define the inputs a function can receive.</p>
+<ol type="1">
+<li><strong>Required arguments</strong>: must be provided when calling the function.</li>
+</ol>
+<div class="width-50">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="" aria-label="1"></a>add_two_values <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b) {</span>
+<span id="cb7-2"><a href="" aria-label="2"></a>  a <span class="sc">+</span> b</span>
+<span id="cb7-3"><a href="" aria-label="3"></a>}</span>
+<span id="cb7-4"><a href="" aria-label="4"></a></span>
+<span id="cb7-5"><a href="" aria-label="5"></a><span class="fu">add_two_values</span>(<span class="dv">5</span>, <span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="fragment">
-<p><br></p>
-<div class="columns">
-<div class="column center" style="width:45%;">
-
-</div><div class="column center" style="width:10%;">
-
-</div><div class="column center" style="width:45%;">
-<p><span class="small"><strong>Explicit and implicit returns</strong></span></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a>arithmetic_mean <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb15-2"><a href=""></a>  </span>
-<span id="cb15-3"><a href=""></a>  <span class="cf">if</span> (<span class="fu">any</span>(<span class="fu">is.na</span>(x))) {</span>
-<span id="cb15-4"><a href=""></a></span>
-<span id="cb15-5"><a href=""></a>    <span class="fu">return</span>(<span class="dv">0</span>)</span>
-<span id="cb15-6"><a href=""></a>  }</span>
-<span id="cb15-7"><a href=""></a></span>
-<span id="cb15-8"><a href=""></a>  <span class="fu">sum</span>(x) <span class="sc">/</span> <span class="fu">length</span>(x)</span>
-<span id="cb15-9"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ol start="2" type="1">
+<li><strong>Default arguments</strong>: have predefined values and can be omitted.</li>
+</ol>
+<div class="width-50">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="" aria-label="1"></a>add_two_values <span class="ot">&lt;-</span> <span class="cf">function</span>(a, <span class="at">b =</span> <span class="dv">8</span>) {</span>
+<span id="cb8-2"><a href="" aria-label="2"></a>  a <span class="sc">+</span> b</span>
+<span id="cb8-3"><a href="" aria-label="3"></a>}</span>
+<span id="cb8-4"><a href="" aria-label="4"></a></span>
+<span id="cb8-5"><a href="" aria-label="5"></a><span class="fu">add_two_values</span>(<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</div></div>
-</div>
-</section>
-<section id="no-return" class="slide level2">
-<h2>No return</h2>
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; Not all functions necessarily return an object</p>
-<p><br></p>
-<p>For instance,</p>
-<ul>
-<li>a function that downloads / saves a file on the disk</li>
-<li>a function that creates a plot (w/ <code>graphics</code>)</li>
-<li>a function that modifies a global option, …</li>
-</ul>
-<div class="fragment">
-<p><br><br></p>
-<div class="columns">
-<div class="column" style="width:45%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; In that case, the function will return <strong><code>NULL</code></strong></p>
-</div><div class="column" style="width:10%;">
-
-</div><div class="column" style="width:45%;">
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="co"># Define the function ----</span></span>
-<span id="cb16-2"><a href=""></a>save_as_csv <span class="ot">&lt;-</span> <span class="cf">function</span>(data) {</span>
-<span id="cb16-3"><a href=""></a></span>
-<span id="cb16-4"><a href=""></a>  <span class="fu">write.csv</span>(data, <span class="st">"filename.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb16-5"><a href=""></a>}</span>
-<span id="cb16-6"><a href=""></a></span>
-<span id="cb16-7"><a href=""></a><span class="co"># Create fake dataset ----</span></span>
-<span id="cb16-8"><a href=""></a>tab <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">y =</span> letters[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>])</span>
-<span id="cb16-9"><a href=""></a></span>
-<span id="cb16-10"><a href=""></a><span class="co"># Call the function ----</span></span>
-<span id="cb16-11"><a href=""></a>result <span class="ot">&lt;-</span> <span class="fu">save_as_csv</span>(<span class="at">data =</span> tab)</span>
-<span id="cb16-12"><a href=""></a></span>
-<span id="cb16-13"><a href=""></a>result</span>
-<span id="cb16-14"><a href=""></a><span class="do">## NULL</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div></div>
-</div>
-</section>
-<section id="invisible-return" class="slide level2">
-<h2>Invisible return</h2>
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; Sometimes, you might want to make the function’s <strong>return invisible</strong> if it is <strong>not assigned</strong> to a variable with the function <strong><code>invisible()</code></strong></p>
-<p><br></p>
-<p>This behaviour is <em>usually</em> used:</p>
-<ul>
-<li>when the function returns <strong><code>NULL</code></strong></li>
-<li>when the return is not the main purpose of the function</li>
-</ul>
-<div class="fragment">
-<p><br><br></p>
-<div class="columns">
-<div class="column" style="width:45%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; If you don’t assigne the output of the function, it will no longer be accessible afterwards</p>
-<p><br></p>
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; If you implement an invisible return, you have to <strong>store the output</strong> of the function in a <strong>variable</strong> and <strong>print this variable</strong></p>
-</div><div class="column" style="width:10%;">
-
-</div><div class="column" style="width:45%;">
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a><span class="co"># Define the function ----</span></span>
-<span id="cb17-2"><a href=""></a>save_as_csv <span class="ot">&lt;-</span> <span class="cf">function</span>(data) {</span>
-<span id="cb17-3"><a href=""></a></span>
-<span id="cb17-4"><a href=""></a>  file_name <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"outputs"</span>, <span class="st">"filename.csv"</span>)</span>
-<span id="cb17-5"><a href=""></a>  <span class="fu">write.csv</span>(data, file_name, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb17-6"><a href=""></a></span>
-<span id="cb17-7"><a href=""></a>  <span class="fu">invisible</span>(file_name)</span>
-<span id="cb17-8"><a href=""></a>}</span>
-<span id="cb17-9"><a href=""></a></span>
-<span id="cb17-10"><a href=""></a><span class="co"># Call the function (no assignation, no return) ----</span></span>
-<span id="cb17-11"><a href=""></a><span class="fu">save_as_csv</span>(<span class="at">data =</span> tab)</span>
-<span id="cb17-12"><a href=""></a></span>
-<span id="cb17-13"><a href=""></a><span class="co"># Call the function (w/ assignation) ----</span></span>
-<span id="cb17-14"><a href=""></a>path <span class="ot">&lt;-</span> <span class="fu">save_as_csv</span>(<span class="at">data =</span> tab)</span>
-<span id="cb17-15"><a href=""></a></span>
-<span id="cb17-16"><a href=""></a>path</span>
-<span id="cb17-17"><a href=""></a><span class="do">## [1] '/home/user/documents/project_a/outputs/filename.csv'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div></div>
-</div>
-</section>
-<section id="arguments" class="slide level2">
-<h2>Arguments</h2>
-<div class="columns">
-<div class="column" style="width:45%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; A function can have <strong>no argument</strong> <br></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="co"># Define the function ----</span></span>
-<span id="cb18-2"><a href=""></a>read_data <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
-<span id="cb18-3"><a href=""></a></span>
-<span id="cb18-4"><a href=""></a>  file_name <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">"data"</span>, <span class="st">"filename.csv"</span>)</span>
-<span id="cb18-5"><a href=""></a></span>
-<span id="cb18-6"><a href=""></a>  <span class="fu">read.csv</span>(file_name)</span>
-<span id="cb18-7"><a href=""></a>}</span>
-<span id="cb18-8"><a href=""></a></span>
-<span id="cb18-9"><a href=""></a><span class="co"># Call the function ----</span></span>
-<span id="cb18-10"><a href=""></a>tab <span class="ot">&lt;-</span> <span class="fu">read_data</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column" style="width:10%;">
-
-</div><div class="column" style="width:45%;">
-
-</div></div>
-</section>
-<section id="arguments-1" class="slide level2">
-<h2>Arguments</h2>
-<div class="columns">
-<div class="column" style="width:45%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; A function can have <strong>no argument</strong> <br></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href=""></a><span class="co"># Define the function ----</span></span>
-<span id="cb19-2"><a href=""></a>read_data <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
-<span id="cb19-3"><a href=""></a></span>
-<span id="cb19-4"><a href=""></a>  file_name <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">"data"</span>, <span class="st">"filename.csv"</span>)</span>
-<span id="cb19-5"><a href=""></a></span>
-<span id="cb19-6"><a href=""></a>  <span class="fu">read.csv</span>(file_name)</span>
-<span id="cb19-7"><a href=""></a>}</span>
-<span id="cb19-8"><a href=""></a></span>
-<span id="cb19-9"><a href=""></a><span class="co"># Call the function ----</span></span>
-<span id="cb19-10"><a href=""></a>tab <span class="ot">&lt;-</span> <span class="fu">read_data</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column" style="width:10%;">
-
-</div><div class="column" style="width:45%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; A function can have <strong>one argument</strong> <br></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a><span class="co"># Define the function ----</span></span>
-<span id="cb20-2"><a href=""></a>read_data <span class="ot">&lt;-</span> <span class="cf">function</span>(filename) {</span>
-<span id="cb20-3"><a href=""></a></span>
-<span id="cb20-4"><a href=""></a>  file_name <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">"data"</span>, filename)</span>
-<span id="cb20-5"><a href=""></a></span>
-<span id="cb20-6"><a href=""></a>  <span class="fu">read.csv</span>(file_name)</span>
-<span id="cb20-7"><a href=""></a>}</span>
-<span id="cb20-8"><a href=""></a></span>
-<span id="cb20-9"><a href=""></a><span class="co"># Call the function ----</span></span>
-<span id="cb20-10"><a href=""></a>tab <span class="ot">&lt;-</span> <span class="fu">read_data</span>(<span class="at">filename =</span> <span class="st">"filename.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div></div>
-</section>
-<section id="arguments-2" class="slide level2">
-<h2>Arguments</h2>
-<div class="columns">
-<div class="column" style="width:45%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; A function can have <strong>no argument</strong> <br></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href=""></a><span class="co"># Define the function ----</span></span>
-<span id="cb21-2"><a href=""></a>read_data <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
-<span id="cb21-3"><a href=""></a></span>
-<span id="cb21-4"><a href=""></a>  file_name <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">"data"</span>, <span class="st">"filename.csv"</span>)</span>
-<span id="cb21-5"><a href=""></a></span>
-<span id="cb21-6"><a href=""></a>  <span class="fu">read.csv</span>(file_name)</span>
-<span id="cb21-7"><a href=""></a>}</span>
-<span id="cb21-8"><a href=""></a></span>
-<span id="cb21-9"><a href=""></a><span class="co"># Call the function ----</span></span>
-<span id="cb21-10"><a href=""></a>tab <span class="ot">&lt;-</span> <span class="fu">read_data</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column" style="width:10%;">
-
-</div><div class="column" style="width:45%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; A function can have <strong>one argument</strong> <br></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a><span class="co"># Define the function ----</span></span>
-<span id="cb22-2"><a href=""></a>read_data <span class="ot">&lt;-</span> <span class="cf">function</span>(filename) {</span>
-<span id="cb22-3"><a href=""></a></span>
-<span id="cb22-4"><a href=""></a>  file_name <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">"data"</span>, filename)</span>
-<span id="cb22-5"><a href=""></a></span>
-<span id="cb22-6"><a href=""></a>  <span class="fu">read.csv</span>(file_name)</span>
-<span id="cb22-7"><a href=""></a>}</span>
-<span id="cb22-8"><a href=""></a></span>
-<span id="cb22-9"><a href=""></a><span class="co"># Call the function ----</span></span>
-<span id="cb22-10"><a href=""></a>tab <span class="ot">&lt;-</span> <span class="fu">read_data</span>(<span class="at">filename =</span> <span class="st">"filename.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div></div>
-<p><br></p>
-<div class="columns">
-<div class="column" style="width:45%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; A function can have <strong>many arguments</strong> <br></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href=""></a><span class="co"># Define the function ----</span></span>
-<span id="cb23-2"><a href=""></a>read_data <span class="ot">&lt;-</span> <span class="cf">function</span>(filename, path) {</span>
-<span id="cb23-3"><a href=""></a></span>
-<span id="cb23-4"><a href=""></a>  file_name <span class="ot">&lt;-</span> <span class="fu">file.path</span>(path, filename)</span>
-<span id="cb23-5"><a href=""></a></span>
-<span id="cb23-6"><a href=""></a>  <span class="fu">read.csv</span>(file_name)</span>
-<span id="cb23-7"><a href=""></a>}</span>
-<span id="cb23-8"><a href=""></a></span>
-<span id="cb23-9"><a href=""></a><span class="co"># Call the function ----</span></span>
-<span id="cb23-10"><a href=""></a>tab <span class="ot">&lt;-</span> <span class="fu">read_data</span>(<span class="at">filename =</span> <span class="st">"filename.csv"</span>, <span class="at">path =</span> <span class="st">"data"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column" style="width:10%;">
-
-</div><div class="column" style="width:45%;">
-
-</div></div>
-</section>
-<section id="arguments-3" class="slide level2">
-<h2>Arguments</h2>
-<div class="columns">
-<div class="column" style="width:45%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; A function can have <strong>no argument</strong> <br></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a><span class="co"># Define the function ----</span></span>
-<span id="cb24-2"><a href=""></a>read_data <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
-<span id="cb24-3"><a href=""></a></span>
-<span id="cb24-4"><a href=""></a>  file_name <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">"data"</span>, <span class="st">"filename.csv"</span>)</span>
-<span id="cb24-5"><a href=""></a></span>
-<span id="cb24-6"><a href=""></a>  <span class="fu">read.csv</span>(file_name)</span>
-<span id="cb24-7"><a href=""></a>}</span>
-<span id="cb24-8"><a href=""></a></span>
-<span id="cb24-9"><a href=""></a><span class="co"># Call the function ----</span></span>
-<span id="cb24-10"><a href=""></a>tab <span class="ot">&lt;-</span> <span class="fu">read_data</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column" style="width:10%;">
-
-</div><div class="column" style="width:45%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; A function can have <strong>one argument</strong> <br></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href=""></a><span class="co"># Define the function ----</span></span>
-<span id="cb25-2"><a href=""></a>read_data <span class="ot">&lt;-</span> <span class="cf">function</span>(filename) {</span>
-<span id="cb25-3"><a href=""></a></span>
-<span id="cb25-4"><a href=""></a>  file_name <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">"data"</span>, filename)</span>
-<span id="cb25-5"><a href=""></a></span>
-<span id="cb25-6"><a href=""></a>  <span class="fu">read.csv</span>(file_name)</span>
-<span id="cb25-7"><a href=""></a>}</span>
-<span id="cb25-8"><a href=""></a></span>
-<span id="cb25-9"><a href=""></a><span class="co"># Call the function ----</span></span>
-<span id="cb25-10"><a href=""></a>tab <span class="ot">&lt;-</span> <span class="fu">read_data</span>(<span class="at">filename =</span> <span class="st">"filename.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div></div>
-<p><br></p>
-<div class="columns">
-<div class="column" style="width:45%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; A function can have <strong>many arguments</strong> <br></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a><span class="co"># Define the function ----</span></span>
-<span id="cb26-2"><a href=""></a>read_data <span class="ot">&lt;-</span> <span class="cf">function</span>(filename, path) {</span>
-<span id="cb26-3"><a href=""></a></span>
-<span id="cb26-4"><a href=""></a>  file_name <span class="ot">&lt;-</span> <span class="fu">file.path</span>(path, filename)</span>
-<span id="cb26-5"><a href=""></a></span>
-<span id="cb26-6"><a href=""></a>  <span class="fu">read.csv</span>(file_name)</span>
-<span id="cb26-7"><a href=""></a>}</span>
-<span id="cb26-8"><a href=""></a></span>
-<span id="cb26-9"><a href=""></a><span class="co"># Call the function ----</span></span>
-<span id="cb26-10"><a href=""></a>tab <span class="ot">&lt;-</span> <span class="fu">read_data</span>(<span class="at">filename =</span> <span class="st">"filename.csv"</span>, <span class="at">path =</span> <span class="st">"data"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column" style="width:10%;">
-
-</div><div class="column" style="width:45%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; Arguments can have <strong>default value</strong> <br></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a><span class="co"># Define the function ----</span></span>
-<span id="cb27-2"><a href=""></a>read_data <span class="ot">&lt;-</span> <span class="cf">function</span>(filename, <span class="at">path =</span> <span class="st">"data"</span>) {</span>
-<span id="cb27-3"><a href=""></a></span>
-<span id="cb27-4"><a href=""></a>  file_name <span class="ot">&lt;-</span> <span class="fu">file.path</span>(path, filename)</span>
-<span id="cb27-5"><a href=""></a></span>
-<span id="cb27-6"><a href=""></a>  <span class="fu">read.csv</span>(file_name)</span>
-<span id="cb27-7"><a href=""></a>}</span>
-<span id="cb27-8"><a href=""></a></span>
-<span id="cb27-9"><a href=""></a><span class="co"># Call the function ----</span></span>
-<span id="cb27-10"><a href=""></a>tab <span class="ot">&lt;-</span> <span class="fu">read_data</span>(<span class="at">filename =</span> <span class="st">"filename.csv"</span>)</span>
-<span id="cb27-11"><a href=""></a>tab <span class="ot">&lt;-</span> <span class="fu">read_data</span>(<span class="at">filename =</span> <span class="st">"filename.csv"</span>, <span class="at">path =</span> <span class="st">"output"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div></div>
-</section>
-<section id="argumentsdotdotdot" class="slide level2">
-<h2>Arguments<sup>1</sup></h2>
-<div class="columns">
-<div class="column" style="width:45%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; A function can have <strong>no argument</strong> <br></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href=""></a><span class="co"># Define the function ----</span></span>
-<span id="cb28-2"><a href=""></a>read_data <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
-<span id="cb28-3"><a href=""></a></span>
-<span id="cb28-4"><a href=""></a>  file_name <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">"data"</span>, <span class="st">"filename.csv"</span>)</span>
-<span id="cb28-5"><a href=""></a></span>
-<span id="cb28-6"><a href=""></a>  <span class="fu">read.csv</span>(file_name)</span>
-<span id="cb28-7"><a href=""></a>}</span>
-<span id="cb28-8"><a href=""></a></span>
-<span id="cb28-9"><a href=""></a><span class="co"># Call the function ----</span></span>
-<span id="cb28-10"><a href=""></a>tab <span class="ot">&lt;-</span> <span class="fu">read_data</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column" style="width:10%;">
-
-</div><div class="column" style="width:45%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; A function can have <strong>one argument</strong> <br></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a><span class="co"># Define the function ----</span></span>
-<span id="cb29-2"><a href=""></a>read_data <span class="ot">&lt;-</span> <span class="cf">function</span>(filename) {</span>
-<span id="cb29-3"><a href=""></a></span>
-<span id="cb29-4"><a href=""></a>  file_name <span class="ot">&lt;-</span> <span class="fu">file.path</span>(<span class="st">"data"</span>, filename)</span>
-<span id="cb29-5"><a href=""></a></span>
-<span id="cb29-6"><a href=""></a>  <span class="fu">read.csv</span>(file_name)</span>
-<span id="cb29-7"><a href=""></a>}</span>
-<span id="cb29-8"><a href=""></a></span>
-<span id="cb29-9"><a href=""></a><span class="co"># Call the function ----</span></span>
-<span id="cb29-10"><a href=""></a>tab <span class="ot">&lt;-</span> <span class="fu">read_data</span>(<span class="at">filename =</span> <span class="st">"filename.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div></div>
-<p><br></p>
-<div class="columns">
-<div class="column" style="width:45%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; A function can have <strong>many arguments</strong> <br></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href=""></a><span class="co"># Define the function ----</span></span>
-<span id="cb30-2"><a href=""></a>read_data <span class="ot">&lt;-</span> <span class="cf">function</span>(filename, path) {</span>
-<span id="cb30-3"><a href=""></a></span>
-<span id="cb30-4"><a href=""></a>  file_name <span class="ot">&lt;-</span> <span class="fu">file.path</span>(path, filename)</span>
-<span id="cb30-5"><a href=""></a></span>
-<span id="cb30-6"><a href=""></a>  <span class="fu">read.csv</span>(file_name)</span>
-<span id="cb30-7"><a href=""></a>}</span>
-<span id="cb30-8"><a href=""></a></span>
-<span id="cb30-9"><a href=""></a><span class="co"># Call the function ----</span></span>
-<span id="cb30-10"><a href=""></a>tab <span class="ot">&lt;-</span> <span class="fu">read_data</span>(<span class="at">filename =</span> <span class="st">"filename.csv"</span>, <span class="at">path =</span> <span class="st">"data"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column" style="width:10%;">
-
-</div><div class="column" style="width:45%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; Arguments can have <strong>default value</strong> <br></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href=""></a><span class="co"># Define the function ----</span></span>
-<span id="cb31-2"><a href=""></a>read_data <span class="ot">&lt;-</span> <span class="cf">function</span>(filename, <span class="at">path =</span> <span class="st">"data"</span>) {</span>
-<span id="cb31-3"><a href=""></a></span>
-<span id="cb31-4"><a href=""></a>  file_name <span class="ot">&lt;-</span> <span class="fu">file.path</span>(path, filename)</span>
-<span id="cb31-5"><a href=""></a></span>
-<span id="cb31-6"><a href=""></a>  <span class="fu">read.csv</span>(file_name)</span>
-<span id="cb31-7"><a href=""></a>}</span>
-<span id="cb31-8"><a href=""></a></span>
-<span id="cb31-9"><a href=""></a><span class="co"># Call the function ----</span></span>
-<span id="cb31-10"><a href=""></a>tab <span class="ot">&lt;-</span> <span class="fu">read_data</span>(<span class="at">filename =</span> <span class="st">"filename.csv"</span>)</span>
-<span id="cb31-11"><a href=""></a>tab <span class="ot">&lt;-</span> <span class="fu">read_data</span>(<span class="at">filename =</span> <span class="st">"filename.csv"</span>, <span class="at">path =</span> <span class="st">"output"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div></div>
-<aside><ol class="aside-footnotes"><li id="fn4"><p>Functions can have a special argument <code>...</code> (pronounced <code>dot-dot-dot</code>). More information <a href="https://adv-r.hadley.nz/functions.html#fun-dot-dot-dot">here</a>.</p></li></ol></aside></section>
-<section id="arguments-4" class="slide level2">
-<h2>Arguments</h2>
-<div class="columns">
-<div class="column" style="width:45%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; <strong>Argument order</strong> matters</p>
-</div><div class="column" style="width:10%;">
-
-</div><div class="column" style="width:45%;">
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href=""></a><span class="co"># Define the function ----</span></span>
-<span id="cb32-2"><a href=""></a>read_data <span class="ot">&lt;-</span> <span class="cf">function</span>(filename, path) {</span>
-<span id="cb32-3"><a href=""></a></span>
-<span id="cb32-4"><a href=""></a>  file_name <span class="ot">&lt;-</span> <span class="fu">file.path</span>(path, filename)</span>
-<span id="cb32-5"><a href=""></a></span>
-<span id="cb32-6"><a href=""></a>  <span class="fu">read.csv</span>(file_name)</span>
-<span id="cb32-7"><a href=""></a>}</span>
-<span id="cb32-8"><a href=""></a></span>
-<span id="cb32-9"><a href=""></a><span class="co"># Call the function ----</span></span>
-<span id="cb32-10"><a href=""></a>tab <span class="ot">&lt;-</span> <span class="fu">read_data</span>(<span class="st">"filename.csv"</span>, <span class="st">"data"</span>)</span>
-<span id="cb32-11"><a href=""></a>tab <span class="ot">&lt;-</span> <span class="fu">read_data</span>(<span class="at">path =</span> <span class="st">"data"</span>, <span class="at">filename =</span> <span class="st">"filename.csv"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div></div>
-<div class="fragment">
-<p><br></p>
-<div class="columns">
-<div class="column" style="width:45%;">
-<p><i class="fa-solid fa-lightbulb" aria-label="lightbulb"></i>&nbsp; Create <strong>pipeable functions</strong></p>
-</div><div class="column" style="width:10%;">
-
-</div><div class="column" style="width:45%;">
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href=""></a><span class="co"># Define the function ----</span></span>
-<span id="cb33-2"><a href=""></a>subset_data <span class="ot">&lt;-</span> <span class="cf">function</span>(data, column) {</span>
-<span id="cb33-3"><a href=""></a></span>
-<span id="cb33-4"><a href=""></a>  data[, column, drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
-<span id="cb33-5"><a href=""></a>}</span>
-<span id="cb33-6"><a href=""></a></span>
-<span id="cb33-7"><a href=""></a><span class="fu">data</span>(iris)</span>
-<span id="cb33-8"><a href=""></a></span>
-<span id="cb33-9"><a href=""></a><span class="co"># Call the function ----</span></span>
-<span id="cb33-10"><a href=""></a><span class="fu">subset_data</span>(<span class="at">data =</span> iris, <span class="at">column =</span> <span class="st">"Petal.Length"</span>)</span>
-<span id="cb33-11"><a href=""></a></span>
-<span id="cb33-12"><a href=""></a><span class="co"># Call the function (pipe version) ----</span></span>
-<span id="cb33-13"><a href=""></a>iris <span class="sc">|&gt;</span> </span>
-<span id="cb33-14"><a href=""></a>  <span class="fu">subset_data</span>(<span class="at">column =</span> <span class="st">"Petal.Length"</span>)</span>
-<span id="cb33-15"><a href=""></a></span>
-<span id="cb33-16"><a href=""></a><span class="co"># Call the function (pipe version) ----</span></span>
-<span id="cb33-17"><a href=""></a>iris <span class="sc">%&gt;%</span></span>
-<span id="cb33-18"><a href=""></a>  <span class="fu">subset_data</span>(<span class="at">column =</span> <span class="st">"Petal.Length"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div></div>
-</div>
-</section>
-<section id="environments" class="slide level2">
-<h2>Environments</h2>
-<div class="columns">
-<div class="column" style="width:45%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; Object created inside a function (<strong><code>local environment</code></strong>) <strong>is not accessible</strong> from the <strong><code>global environment</code></strong></p>
-</div><div class="column" style="width:10%;">
-
-</div><div class="column" style="width:45%;">
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href=""></a><span class="co"># Define the function ----</span></span>
-<span id="cb34-2"><a href=""></a>arithmetic_mean <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb34-3"><a href=""></a>  </span>
-<span id="cb34-4"><a href=""></a>  y <span class="ot">&lt;-</span> <span class="fu">sum</span>(x) <span class="sc">/</span> <span class="fu">length</span>(x)</span>
-<span id="cb34-5"><a href=""></a>  y</span>
-<span id="cb34-6"><a href=""></a>}</span>
-<span id="cb34-7"><a href=""></a></span>
-<span id="cb34-8"><a href=""></a>y</span>
-<span id="cb34-9"><a href=""></a><span class="co"># Error: object 'y' not found</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div></div>
-<div class="fragment">
-<p><br></p>
-<div class="columns">
-<div class="column" style="width:45%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; Object created in the <strong><code>global environment</code></strong> <strong>is accessible</strong> from the function</p>
-</div><div class="column" style="width:10%;">
-
-</div><div class="column" style="width:45%;">
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href=""></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
-<span id="cb35-2"><a href=""></a></span>
-<span id="cb35-3"><a href=""></a><span class="co"># Define the function ----</span></span>
-<span id="cb35-4"><a href=""></a>arithmetic_mean <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
-<span id="cb35-5"><a href=""></a>  </span>
-<span id="cb35-6"><a href=""></a>  <span class="fu">sum</span>(x) <span class="sc">/</span> <span class="fu">length</span>(x)</span>
-<span id="cb35-7"><a href=""></a>}</span>
-<span id="cb35-8"><a href=""></a></span>
-<span id="cb35-9"><a href=""></a><span class="fu">arithmetic_mean</span>()</span>
-<span id="cb35-10"><a href=""></a><span class="co"># 5.5</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div></div>
 </div>
 <div class="fragment">
-<p><br></p>
-<div class="columns">
-<div class="column" style="width:45%;">
-<p><i class="fa-solid fa-triangle-exclamation" aria-label="triangle-exclamation"></i>&nbsp; But <strong>use arguments</strong> instead</p>
-</div><div class="column" style="width:10%;">
-
-</div><div class="column" style="width:45%;">
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href=""></a>vect <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
-<span id="cb36-2"><a href=""></a></span>
-<span id="cb36-3"><a href=""></a><span class="co"># Define the function ----</span></span>
-<span id="cb36-4"><a href=""></a>arithmetic_mean <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb36-5"><a href=""></a>  </span>
-<span id="cb36-6"><a href=""></a>  <span class="fu">sum</span>(x) <span class="sc">/</span> <span class="fu">length</span>(x)</span>
-<span id="cb36-7"><a href=""></a>}</span>
-<span id="cb36-8"><a href=""></a></span>
-<span id="cb36-9"><a href=""></a><span class="fu">arithmetic_mean</span>(<span class="at">x =</span> vect)</span>
-<span id="cb36-10"><a href=""></a><span class="co"># 5.5</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ol start="3" type="1">
+<li><strong>Argument matching</strong>: arguments can be passed by position or by name.</li>
+</ol>
+<div class="width-50">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="" aria-label="1"></a><span class="fu">add_two_values</span>(<span class="dv">10</span>, <span class="dv">5</span>)</span>
+<span id="cb9-2"><a href="" aria-label="2"></a><span class="fu">add_two_values</span>(<span class="at">b =</span> <span class="dv">5</span>, <span class="at">a =</span> <span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</div></div>
 </div>
 </section>
-<section>
-<section id="case-study" class="title-slide slide level1 center">
-<h1>Case study</h1>
+<section id="writing-good-functions" class="slide level2 size-sm">
+<h2>Writing good functions</h2>
+<p><span class="vspace-xl"></span></p>
+<div class="grid text-center">
+<div class="g-col-4">
+<p><span style="color: #0D657D;"><i class="fa-solid fa-glasses fa-xl" aria-label="glasses"></i></span></p>
+<p><span style="color: #0D657D;"><strong>Readable</strong></span><br> <span class="size-sm">Meaningful names</span></p>
+</div>
+<div class="g-col-4">
+<p><span style="color: #805A35;"><i class="fa-solid fa-bullseye fa-xl" aria-label="bullseye"></i></span></p>
+<p><span style="color: #805A35;"><strong>Focused</strong></span><br> <span class="size-sm">One task per function</span></p>
+</div>
+<div class="g-col-4">
+<p><span style="color: #38664B;"><i class="fa-solid fa-angles-right fa-xl" aria-label="angles-right"></i></span></p>
+<p><span style="color: #38664B;"><strong>Pipeable</strong></span><br> <span class="size-sm">Write pipe-friendly functions</span></p>
+</div>
+</div>
+<p><span class="vspace-xs"></span></p>
+<div class="grid text-center">
+<div class="g-col-2">
 
+</div>
+<div class="g-col-4">
+<p><span style="color: #4A626B;"><i class="fa-solid fa-shield-halved fa-xl" aria-label="shield-halved"></i></span></p>
+<p><span style="color: #4A626B;"><strong>Predictable</strong></span><br> <span class="size-sm">Minimize side effects</span></p>
+</div>
+<div class="g-col-4">
+<p><span style="color: #963F39;"><i class="fa-solid fa-circle-check fa-xl" aria-label="circle-check"></i></span></p>
+<p><span style="color: #963F39;"><strong>Robust</strong></span><br> <span class="size-sm">Validate inputs</span></p>
+</div>
+<div class="g-col-2">
+
+</div>
+</div>
 </section>
-<section id="from-script-to-function" class="slide level2">
-<h2>From script to function</h2>
-<div class="columns">
-<div class="column" style="width:47%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; Let’s download the <a href="https://gadm.org"><strong>spatial boundary</strong></a> of France</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href=""></a><span class="do">## %</span></span>
-<span id="cb37-2"><a href=""></a></span>
-<span id="cb37-3"><a href=""></a><span class="do">##</span></span>
-<span id="cb37-4"><a href=""></a><span class="do">## DISTANT FILE</span></span>
-<span id="cb37-5"><a href=""></a><span class="do">##</span></span>
-<span id="cb37-6"><a href=""></a></span>
-<span id="cb37-7"><a href=""></a><span class="co"># Base URL ----</span></span>
-<span id="cb37-8"><a href=""></a>base_url <span class="ot">&lt;-</span> <span class="st">"https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/"</span></span>
-<span id="cb37-9"><a href=""></a></span>
-<span id="cb37-10"><a href=""></a><span class="co"># File name ----</span></span>
-<span id="cb37-11"><a href=""></a>file_name <span class="ot">&lt;-</span> <span class="st">"gadm41_FRA.gpkg"</span></span>
-<span id="cb37-12"><a href=""></a></span>
-<span id="cb37-13"><a href=""></a><span class="co"># Full URL ----</span></span>
-<span id="cb37-14"><a href=""></a>(full_url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(base_url, file_name))</span>
-<span id="cb37-15"><a href=""></a><span class="co"># https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/gadm41_FRA.gpkg</span></span>
-<span id="cb37-16"><a href=""></a></span>
-<span id="cb37-17"><a href=""></a><span class="do">##</span></span>
-<span id="cb37-18"><a href=""></a><span class="do">## LOCAL FILE</span></span>
-<span id="cb37-19"><a href=""></a><span class="do">##</span></span>
-<span id="cb37-20"><a href=""></a></span>
-<span id="cb37-21"><a href=""></a><span class="co"># Destination folder ----</span></span>
-<span id="cb37-22"><a href=""></a>(dest_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>))</span>
-<span id="cb37-23"><a href=""></a><span class="co"># /home/nicolas/projects/demo/data</span></span>
-<span id="cb37-24"><a href=""></a></span>
-<span id="cb37-25"><a href=""></a><span class="co"># Destination file ----</span></span>
-<span id="cb37-26"><a href=""></a>(full_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(dest_dir, file_name))</span>
-<span id="cb37-27"><a href=""></a><span class="co"># /home/nicolas/projects/demo/data/gadm41_FRA.gpkg</span></span>
-<span id="cb37-28"><a href=""></a></span>
-<span id="cb37-29"><a href=""></a><span class="do">##</span></span>
-<span id="cb37-30"><a href=""></a><span class="do">## DOWNLOAD FILE</span></span>
-<span id="cb37-31"><a href=""></a><span class="do">##</span></span>
-<span id="cb37-32"><a href=""></a></span>
-<span id="cb37-33"><a href=""></a><span class="fu">download.file</span>(<span class="at">url =</span> full_url, <span class="at">destfile =</span> full_path, <span class="at">mode =</span> <span class="st">"wb"</span>)</span>
-<span id="cb37-34"><a href=""></a><span class="do">## %</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column" style="width:6%;">
-
-</div><div class="column" style="width:47%;">
-
-</div></div>
-</section>
-<section id="from-script-to-function-1" class="slide level2">
-<h2>From script to function</h2>
-<div class="columns">
-<div class="column" style="width:47%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; Let’s download the <a href="https://gadm.org"><strong>spatial boundary</strong></a> of France</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href=""></a><span class="do">## %</span></span>
-<span id="cb38-2"><a href=""></a></span>
-<span id="cb38-3"><a href=""></a><span class="do">##</span></span>
-<span id="cb38-4"><a href=""></a><span class="do">## DISTANT FILE</span></span>
-<span id="cb38-5"><a href=""></a><span class="do">##</span></span>
-<span id="cb38-6"><a href=""></a></span>
-<span id="cb38-7"><a href=""></a><span class="co"># Base URL ----</span></span>
-<span id="cb38-8"><a href=""></a>base_url <span class="ot">&lt;-</span> <span class="st">"https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/"</span></span>
-<span id="cb38-9"><a href=""></a></span>
-<span id="cb38-10"><a href=""></a><span class="co"># File name ----</span></span>
-<span id="cb38-11"><a href=""></a>file_name <span class="ot">&lt;-</span> <span class="st">"gadm41_FRA.gpkg"</span></span>
-<span id="cb38-12"><a href=""></a></span>
-<span id="cb38-13"><a href=""></a><span class="co"># Full URL ----</span></span>
-<span id="cb38-14"><a href=""></a>(full_url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(base_url, file_name))</span>
-<span id="cb38-15"><a href=""></a><span class="co"># https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/gadm41_FRA.gpkg</span></span>
-<span id="cb38-16"><a href=""></a></span>
-<span id="cb38-17"><a href=""></a><span class="do">##</span></span>
-<span id="cb38-18"><a href=""></a><span class="do">## LOCAL FILE</span></span>
-<span id="cb38-19"><a href=""></a><span class="do">##</span></span>
-<span id="cb38-20"><a href=""></a></span>
-<span id="cb38-21"><a href=""></a><span class="co"># Destination folder ----</span></span>
-<span id="cb38-22"><a href=""></a>(dest_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>))</span>
-<span id="cb38-23"><a href=""></a><span class="co"># /home/nicolas/projects/demo/data</span></span>
-<span id="cb38-24"><a href=""></a></span>
-<span id="cb38-25"><a href=""></a><span class="co"># Destination file ----</span></span>
-<span id="cb38-26"><a href=""></a>(full_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(dest_dir, file_name))</span>
-<span id="cb38-27"><a href=""></a><span class="co"># /home/nicolas/projects/demo/data/gadm41_FRA.gpkg</span></span>
-<span id="cb38-28"><a href=""></a></span>
-<span id="cb38-29"><a href=""></a><span class="do">##</span></span>
-<span id="cb38-30"><a href=""></a><span class="do">## DOWNLOAD FILE</span></span>
-<span id="cb38-31"><a href=""></a><span class="do">##</span></span>
-<span id="cb38-32"><a href=""></a></span>
-<span id="cb38-33"><a href=""></a><span class="fu">download.file</span>(<span class="at">url =</span> full_url, <span class="at">destfile =</span> full_path, <span class="at">mode =</span> <span class="st">"wb"</span>)</span>
-<span id="cb38-34"><a href=""></a><span class="do">## %</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column" style="width:6%;">
-
-</div><div class="column" style="width:47%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; <strong>Convert into function</strong> - <code>v0.1</code></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href=""></a>download_gadm <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
-<span id="cb39-2"><a href=""></a>    </span>
-<span id="cb39-3"><a href=""></a>  <span class="do">##</span></span>
-<span id="cb39-4"><a href=""></a>  <span class="do">## DISTANT FILE</span></span>
-<span id="cb39-5"><a href=""></a>  <span class="do">##</span></span>
-<span id="cb39-6"><a href=""></a></span>
-<span id="cb39-7"><a href=""></a>  <span class="co"># Base URL ----</span></span>
-<span id="cb39-8"><a href=""></a>  base_url <span class="ot">&lt;-</span> <span class="st">"https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/"</span></span>
-<span id="cb39-9"><a href=""></a></span>
-<span id="cb39-10"><a href=""></a>  <span class="co"># File name ----</span></span>
-<span id="cb39-11"><a href=""></a>  file_name <span class="ot">&lt;-</span> <span class="st">"gadm41_FRA.gpkg"</span></span>
-<span id="cb39-12"><a href=""></a></span>
-<span id="cb39-13"><a href=""></a>  <span class="co"># Full URL ----</span></span>
-<span id="cb39-14"><a href=""></a>  (full_url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(base_url, file_name))</span>
-<span id="cb39-15"><a href=""></a>  <span class="co"># https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/gadm41_FRA.gpkg</span></span>
-<span id="cb39-16"><a href=""></a></span>
-<span id="cb39-17"><a href=""></a>  <span class="do">##</span></span>
-<span id="cb39-18"><a href=""></a>  <span class="do">## LOCAL FILE</span></span>
-<span id="cb39-19"><a href=""></a>  <span class="do">##</span></span>
-<span id="cb39-20"><a href=""></a></span>
-<span id="cb39-21"><a href=""></a>  <span class="co"># Destination folder ----</span></span>
-<span id="cb39-22"><a href=""></a>  (dest_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>))</span>
-<span id="cb39-23"><a href=""></a>  <span class="co"># /home/nicolas/projects/demo/data</span></span>
-<span id="cb39-24"><a href=""></a></span>
-<span id="cb39-25"><a href=""></a>  <span class="co"># Destination file ----</span></span>
-<span id="cb39-26"><a href=""></a>  (full_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(dest_dir, file_name))</span>
-<span id="cb39-27"><a href=""></a>  <span class="co"># /home/nicolas/projects/demo/data/gadm41_FRA.gpkg</span></span>
-<span id="cb39-28"><a href=""></a></span>
-<span id="cb39-29"><a href=""></a>  <span class="do">##</span></span>
-<span id="cb39-30"><a href=""></a>  <span class="do">## DOWNLOAD FILE</span></span>
-<span id="cb39-31"><a href=""></a>  <span class="do">##</span></span>
-<span id="cb39-32"><a href=""></a></span>
-<span id="cb39-33"><a href=""></a>  <span class="fu">download.file</span>(<span class="at">url =</span> full_url, <span class="at">destfile =</span> full_path, <span class="at">mode =</span> <span class="st">"wb"</span>)</span>
-<span id="cb39-34"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div></div>
-</section>
-<section id="from-script-to-function-2" class="slide level2">
-<h2>From script to function</h2>
-<div class="columns">
-<div class="column" style="width:47%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; Let’s download the <a href="https://gadm.org"><strong>spatial boundary</strong></a> of France</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href=""></a><span class="do">## %</span></span>
-<span id="cb40-2"><a href=""></a></span>
-<span id="cb40-3"><a href=""></a><span class="do">##</span></span>
-<span id="cb40-4"><a href=""></a><span class="do">## DISTANT FILE</span></span>
-<span id="cb40-5"><a href=""></a><span class="do">##</span></span>
-<span id="cb40-6"><a href=""></a></span>
-<span id="cb40-7"><a href=""></a><span class="co"># Base URL ----</span></span>
-<span id="cb40-8"><a href=""></a>base_url <span class="ot">&lt;-</span> <span class="st">"https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/"</span></span>
-<span id="cb40-9"><a href=""></a></span>
-<span id="cb40-10"><a href=""></a><span class="co"># File name ----</span></span>
-<span id="cb40-11"><a href=""></a>file_name <span class="ot">&lt;-</span> <span class="st">"gadm41_FRA.gpkg"</span></span>
-<span id="cb40-12"><a href=""></a></span>
-<span id="cb40-13"><a href=""></a><span class="co"># Full URL ----</span></span>
-<span id="cb40-14"><a href=""></a>(full_url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(base_url, file_name))</span>
-<span id="cb40-15"><a href=""></a><span class="co"># https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/gadm41_FRA.gpkg</span></span>
-<span id="cb40-16"><a href=""></a></span>
-<span id="cb40-17"><a href=""></a><span class="do">##</span></span>
-<span id="cb40-18"><a href=""></a><span class="do">## LOCAL FILE</span></span>
-<span id="cb40-19"><a href=""></a><span class="do">##</span></span>
-<span id="cb40-20"><a href=""></a></span>
-<span id="cb40-21"><a href=""></a><span class="co"># Destination folder ----</span></span>
-<span id="cb40-22"><a href=""></a>(dest_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>))</span>
-<span id="cb40-23"><a href=""></a><span class="co"># /home/nicolas/projects/demo/data</span></span>
-<span id="cb40-24"><a href=""></a></span>
-<span id="cb40-25"><a href=""></a><span class="co"># Destination file ----</span></span>
-<span id="cb40-26"><a href=""></a>(full_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(dest_dir, file_name))</span>
-<span id="cb40-27"><a href=""></a><span class="co"># /home/nicolas/projects/demo/data/gadm41_FRA.gpkg</span></span>
-<span id="cb40-28"><a href=""></a></span>
-<span id="cb40-29"><a href=""></a><span class="do">##</span></span>
-<span id="cb40-30"><a href=""></a><span class="do">## DOWNLOAD FILE</span></span>
-<span id="cb40-31"><a href=""></a><span class="do">##</span></span>
-<span id="cb40-32"><a href=""></a></span>
-<span id="cb40-33"><a href=""></a><span class="fu">download.file</span>(<span class="at">url =</span> full_url, <span class="at">destfile =</span> full_path, <span class="at">mode =</span> <span class="st">"wb"</span>)</span>
-<span id="cb40-34"><a href=""></a><span class="do">## %</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column" style="width:6%;">
-
-</div><div class="column" style="width:47%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; <strong>Clean comments</strong> - <code>v0.2</code></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href=""></a>download_gadm <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
-<span id="cb41-2"><a href=""></a>    </span>
-<span id="cb41-3"><a href=""></a>  <span class="co"># Base URL ----</span></span>
-<span id="cb41-4"><a href=""></a>  base_url <span class="ot">&lt;-</span> <span class="st">"https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/"</span></span>
-<span id="cb41-5"><a href=""></a></span>
-<span id="cb41-6"><a href=""></a>  <span class="co"># File name ----</span></span>
-<span id="cb41-7"><a href=""></a>  file_name <span class="ot">&lt;-</span> <span class="st">"gadm41_FRA.gpkg"</span></span>
-<span id="cb41-8"><a href=""></a></span>
-<span id="cb41-9"><a href=""></a>  <span class="co"># Full URL ----</span></span>
-<span id="cb41-10"><a href=""></a>  full_url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(base_url, file_name)</span>
-<span id="cb41-11"><a href=""></a></span>
-<span id="cb41-12"><a href=""></a>  <span class="co"># Destination folder ----</span></span>
-<span id="cb41-13"><a href=""></a>  dest_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>)</span>
-<span id="cb41-14"><a href=""></a></span>
-<span id="cb41-15"><a href=""></a>  <span class="co"># Destination file ----</span></span>
-<span id="cb41-16"><a href=""></a>  full_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(dest_dir, file_name)</span>
-<span id="cb41-17"><a href=""></a></span>
-<span id="cb41-18"><a href=""></a>  <span class="co"># Download file ----</span></span>
-<span id="cb41-19"><a href=""></a>  <span class="fu">download.file</span>(<span class="at">url =</span> full_url, <span class="at">destfile =</span> full_path, <span class="at">mode =</span> <span class="st">"wb"</span>)</span>
-<span id="cb41-20"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div></div>
-</section>
-<section id="from-script-to-function-3" class="slide level2">
-<h2>From script to function</h2>
-<div class="columns">
-<div class="column" style="width:47%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; Let’s download the <a href="https://gadm.org"><strong>spatial boundary</strong></a> of France</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href=""></a><span class="do">## %</span></span>
-<span id="cb42-2"><a href=""></a></span>
-<span id="cb42-3"><a href=""></a><span class="do">##</span></span>
-<span id="cb42-4"><a href=""></a><span class="do">## DISTANT FILE</span></span>
-<span id="cb42-5"><a href=""></a><span class="do">##</span></span>
-<span id="cb42-6"><a href=""></a></span>
-<span id="cb42-7"><a href=""></a><span class="co"># Base URL ----</span></span>
-<span id="cb42-8"><a href=""></a>base_url <span class="ot">&lt;-</span> <span class="st">"https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/"</span></span>
-<span id="cb42-9"><a href=""></a></span>
-<span id="cb42-10"><a href=""></a><span class="co"># File name ----</span></span>
-<span id="cb42-11"><a href=""></a>file_name <span class="ot">&lt;-</span> <span class="st">"gadm41_FRA.gpkg"</span></span>
-<span id="cb42-12"><a href=""></a></span>
-<span id="cb42-13"><a href=""></a><span class="co"># Full URL ----</span></span>
-<span id="cb42-14"><a href=""></a>(full_url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(base_url, file_name))</span>
-<span id="cb42-15"><a href=""></a><span class="co"># https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/gadm41_FRA.gpkg</span></span>
-<span id="cb42-16"><a href=""></a></span>
-<span id="cb42-17"><a href=""></a><span class="do">##</span></span>
-<span id="cb42-18"><a href=""></a><span class="do">## LOCAL FILE</span></span>
-<span id="cb42-19"><a href=""></a><span class="do">##</span></span>
-<span id="cb42-20"><a href=""></a></span>
-<span id="cb42-21"><a href=""></a><span class="co"># Destination folder ----</span></span>
-<span id="cb42-22"><a href=""></a>(dest_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>))</span>
-<span id="cb42-23"><a href=""></a><span class="co"># /home/nicolas/projects/demo/data</span></span>
-<span id="cb42-24"><a href=""></a></span>
-<span id="cb42-25"><a href=""></a><span class="co"># Destination file ----</span></span>
-<span id="cb42-26"><a href=""></a>(full_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(dest_dir, file_name))</span>
-<span id="cb42-27"><a href=""></a><span class="co"># /home/nicolas/projects/demo/data/gadm41_FRA.gpkg</span></span>
-<span id="cb42-28"><a href=""></a></span>
-<span id="cb42-29"><a href=""></a><span class="do">##</span></span>
-<span id="cb42-30"><a href=""></a><span class="do">## DOWNLOAD FILE</span></span>
-<span id="cb42-31"><a href=""></a><span class="do">##</span></span>
-<span id="cb42-32"><a href=""></a></span>
-<span id="cb42-33"><a href=""></a><span class="fu">download.file</span>(<span class="at">url =</span> full_url, <span class="at">destfile =</span> full_path, <span class="at">mode =</span> <span class="st">"wb"</span>)</span>
-<span id="cb42-34"><a href=""></a><span class="do">## %</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column" style="width:6%;">
-
-</div><div class="column" style="width:47%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; <strong>Function return</strong> - <code>v0.3</code></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href=""></a>download_gadm <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
-<span id="cb43-2"><a href=""></a>    </span>
-<span id="cb43-3"><a href=""></a>  <span class="co"># Base URL ----</span></span>
-<span id="cb43-4"><a href=""></a>  base_url <span class="ot">&lt;-</span> <span class="st">"https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/"</span></span>
-<span id="cb43-5"><a href=""></a></span>
-<span id="cb43-6"><a href=""></a>  <span class="co"># File name ----</span></span>
-<span id="cb43-7"><a href=""></a>  file_name <span class="ot">&lt;-</span> <span class="st">"gadm41_FRA.gpkg"</span></span>
-<span id="cb43-8"><a href=""></a></span>
-<span id="cb43-9"><a href=""></a>  <span class="co"># Full URL ----</span></span>
-<span id="cb43-10"><a href=""></a>  full_url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(base_url, file_name)</span>
-<span id="cb43-11"><a href=""></a></span>
-<span id="cb43-12"><a href=""></a>  <span class="co"># Destination folder ----</span></span>
-<span id="cb43-13"><a href=""></a>  dest_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>)</span>
-<span id="cb43-14"><a href=""></a></span>
-<span id="cb43-15"><a href=""></a>  <span class="co"># Destination file ----</span></span>
-<span id="cb43-16"><a href=""></a>  full_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(dest_dir, file_name)</span>
-<span id="cb43-17"><a href=""></a></span>
-<span id="cb43-18"><a href=""></a>  <span class="co"># Download file ----</span></span>
-<span id="cb43-19"><a href=""></a>  <span class="fu">download.file</span>(<span class="at">url =</span> full_url, <span class="at">destfile =</span> full_path, <span class="at">mode =</span> <span class="st">"wb"</span>)</span>
-<span id="cb43-20"><a href=""></a></span>
-<span id="cb43-21"><a href=""></a>  full_path</span>
-<span id="cb43-22"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div></div>
-</section>
-<section id="from-script-to-function-4" class="slide level2">
-<h2>From script to function</h2>
-<div class="columns">
-<div class="column" style="width:47%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; Let’s download the <a href="https://gadm.org"><strong>spatial boundary</strong></a> of France</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href=""></a><span class="do">## %</span></span>
-<span id="cb44-2"><a href=""></a></span>
-<span id="cb44-3"><a href=""></a><span class="do">##</span></span>
-<span id="cb44-4"><a href=""></a><span class="do">## DISTANT FILE</span></span>
-<span id="cb44-5"><a href=""></a><span class="do">##</span></span>
-<span id="cb44-6"><a href=""></a></span>
-<span id="cb44-7"><a href=""></a><span class="co"># Base URL ----</span></span>
-<span id="cb44-8"><a href=""></a>base_url <span class="ot">&lt;-</span> <span class="st">"https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/"</span></span>
-<span id="cb44-9"><a href=""></a></span>
-<span id="cb44-10"><a href=""></a><span class="co"># File name ----</span></span>
-<span id="cb44-11"><a href=""></a>file_name <span class="ot">&lt;-</span> <span class="st">"gadm41_FRA.gpkg"</span></span>
-<span id="cb44-12"><a href=""></a></span>
-<span id="cb44-13"><a href=""></a><span class="co"># Full URL ----</span></span>
-<span id="cb44-14"><a href=""></a>(full_url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(base_url, file_name))</span>
-<span id="cb44-15"><a href=""></a><span class="co"># https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/gadm41_FRA.gpkg</span></span>
-<span id="cb44-16"><a href=""></a></span>
-<span id="cb44-17"><a href=""></a><span class="do">##</span></span>
-<span id="cb44-18"><a href=""></a><span class="do">## LOCAL FILE</span></span>
-<span id="cb44-19"><a href=""></a><span class="do">##</span></span>
-<span id="cb44-20"><a href=""></a></span>
-<span id="cb44-21"><a href=""></a><span class="co"># Destination folder ----</span></span>
-<span id="cb44-22"><a href=""></a>(dest_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>))</span>
-<span id="cb44-23"><a href=""></a><span class="co"># /home/nicolas/projects/demo/data</span></span>
-<span id="cb44-24"><a href=""></a></span>
-<span id="cb44-25"><a href=""></a><span class="co"># Destination file ----</span></span>
-<span id="cb44-26"><a href=""></a>(full_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(dest_dir, file_name))</span>
-<span id="cb44-27"><a href=""></a><span class="co"># /home/nicolas/projects/demo/data/gadm41_FRA.gpkg</span></span>
-<span id="cb44-28"><a href=""></a></span>
-<span id="cb44-29"><a href=""></a><span class="do">##</span></span>
-<span id="cb44-30"><a href=""></a><span class="do">## DOWNLOAD FILE</span></span>
-<span id="cb44-31"><a href=""></a><span class="do">##</span></span>
-<span id="cb44-32"><a href=""></a></span>
-<span id="cb44-33"><a href=""></a><span class="fu">download.file</span>(<span class="at">url =</span> full_url, <span class="at">destfile =</span> full_path, <span class="at">mode =</span> <span class="st">"wb"</span>)</span>
-<span id="cb44-34"><a href=""></a><span class="do">## %</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column" style="width:6%;">
-
-</div><div class="column" style="width:47%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; <strong>Invisible return</strong> - <code>v0.4</code></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href=""></a>download_gadm <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
-<span id="cb45-2"><a href=""></a>    </span>
-<span id="cb45-3"><a href=""></a>  <span class="co"># Base URL ----</span></span>
-<span id="cb45-4"><a href=""></a>  base_url <span class="ot">&lt;-</span> <span class="st">"https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/"</span></span>
-<span id="cb45-5"><a href=""></a></span>
-<span id="cb45-6"><a href=""></a>  <span class="co"># File name ----</span></span>
-<span id="cb45-7"><a href=""></a>  file_name <span class="ot">&lt;-</span> <span class="st">"gadm41_FRA.gpkg"</span></span>
-<span id="cb45-8"><a href=""></a></span>
-<span id="cb45-9"><a href=""></a>  <span class="co"># Full URL ----</span></span>
-<span id="cb45-10"><a href=""></a>  full_url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(base_url, file_name)</span>
-<span id="cb45-11"><a href=""></a></span>
-<span id="cb45-12"><a href=""></a>  <span class="co"># Destination folder ----</span></span>
-<span id="cb45-13"><a href=""></a>  dest_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>)</span>
-<span id="cb45-14"><a href=""></a></span>
-<span id="cb45-15"><a href=""></a>  <span class="co"># Destination file ----</span></span>
-<span id="cb45-16"><a href=""></a>  full_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(dest_dir, file_name)</span>
-<span id="cb45-17"><a href=""></a></span>
-<span id="cb45-18"><a href=""></a>  <span class="co"># Download file ----</span></span>
-<span id="cb45-19"><a href=""></a>  <span class="fu">download.file</span>(<span class="at">url =</span> full_url, <span class="at">destfile =</span> full_path, <span class="at">mode =</span> <span class="st">"wb"</span>)</span>
-<span id="cb45-20"><a href=""></a></span>
-<span id="cb45-21"><a href=""></a>  <span class="fu">invisible</span>(full_path)</span>
-<span id="cb45-22"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div></div>
-</section>
-<section id="from-script-to-function-5" class="slide level2">
-<h2>From script to function</h2>
-<div class="columns">
-<div class="column" style="width:47%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; Let’s download the <a href="https://gadm.org"><strong>spatial boundary</strong></a> of France</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href=""></a><span class="do">## %</span></span>
-<span id="cb46-2"><a href=""></a></span>
-<span id="cb46-3"><a href=""></a><span class="do">##</span></span>
-<span id="cb46-4"><a href=""></a><span class="do">## DISTANT FILE</span></span>
-<span id="cb46-5"><a href=""></a><span class="do">##</span></span>
-<span id="cb46-6"><a href=""></a></span>
-<span id="cb46-7"><a href=""></a><span class="co"># Base URL ----</span></span>
-<span id="cb46-8"><a href=""></a>base_url <span class="ot">&lt;-</span> <span class="st">"https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/"</span></span>
-<span id="cb46-9"><a href=""></a></span>
-<span id="cb46-10"><a href=""></a><span class="co"># File name ----</span></span>
-<span id="cb46-11"><a href=""></a>file_name <span class="ot">&lt;-</span> <span class="st">"gadm41_FRA.gpkg"</span></span>
-<span id="cb46-12"><a href=""></a></span>
-<span id="cb46-13"><a href=""></a><span class="co"># Full URL ----</span></span>
-<span id="cb46-14"><a href=""></a>(full_url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(base_url, file_name))</span>
-<span id="cb46-15"><a href=""></a><span class="co"># https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/gadm41_FRA.gpkg</span></span>
-<span id="cb46-16"><a href=""></a></span>
-<span id="cb46-17"><a href=""></a><span class="do">##</span></span>
-<span id="cb46-18"><a href=""></a><span class="do">## LOCAL FILE</span></span>
-<span id="cb46-19"><a href=""></a><span class="do">##</span></span>
-<span id="cb46-20"><a href=""></a></span>
-<span id="cb46-21"><a href=""></a><span class="co"># Destination folder ----</span></span>
-<span id="cb46-22"><a href=""></a>(dest_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>))</span>
-<span id="cb46-23"><a href=""></a><span class="co"># /home/nicolas/projects/demo/data</span></span>
-<span id="cb46-24"><a href=""></a></span>
-<span id="cb46-25"><a href=""></a><span class="co"># Destination file ----</span></span>
-<span id="cb46-26"><a href=""></a>(full_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(dest_dir, file_name))</span>
-<span id="cb46-27"><a href=""></a><span class="co"># /home/nicolas/projects/demo/data/gadm41_FRA.gpkg</span></span>
-<span id="cb46-28"><a href=""></a></span>
-<span id="cb46-29"><a href=""></a><span class="do">##</span></span>
-<span id="cb46-30"><a href=""></a><span class="do">## DOWNLOAD FILE</span></span>
-<span id="cb46-31"><a href=""></a><span class="do">##</span></span>
-<span id="cb46-32"><a href=""></a></span>
-<span id="cb46-33"><a href=""></a><span class="fu">download.file</span>(<span class="at">url =</span> full_url, <span class="at">destfile =</span> full_path, <span class="at">mode =</span> <span class="st">"wb"</span>)</span>
-<span id="cb46-34"><a href=""></a><span class="do">## %</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column" style="width:6%;">
-
-</div><div class="column" style="width:47%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; <strong>Add ‘file_name’ argument</strong> - <code>v0.5</code></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href=""></a>download_gadm <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">file_name =</span> <span class="st">"gadm41_FRA.gpkg"</span>) {</span>
-<span id="cb47-2"><a href=""></a>    </span>
-<span id="cb47-3"><a href=""></a>  <span class="co"># Base URL ----</span></span>
-<span id="cb47-4"><a href=""></a>  base_url <span class="ot">&lt;-</span> <span class="st">"https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/"</span></span>
-<span id="cb47-5"><a href=""></a></span>
-<span id="cb47-6"><a href=""></a>  <span class="co"># File name ----</span></span>
-<span id="cb47-7"><a href=""></a>  <span class="co"># </span></span>
-<span id="cb47-8"><a href=""></a></span>
-<span id="cb47-9"><a href=""></a>  <span class="co"># Full URL ----</span></span>
-<span id="cb47-10"><a href=""></a>  full_url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(base_url, file_name)</span>
-<span id="cb47-11"><a href=""></a></span>
-<span id="cb47-12"><a href=""></a>  <span class="co"># Destination folder ----</span></span>
-<span id="cb47-13"><a href=""></a>  dest_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>)</span>
-<span id="cb47-14"><a href=""></a></span>
-<span id="cb47-15"><a href=""></a>  <span class="co"># Destination file ----</span></span>
-<span id="cb47-16"><a href=""></a>  full_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(dest_dir, file_name)</span>
-<span id="cb47-17"><a href=""></a></span>
-<span id="cb47-18"><a href=""></a>  <span class="co"># Download file ----</span></span>
-<span id="cb47-19"><a href=""></a>  <span class="fu">download.file</span>(<span class="at">url =</span> full_url, <span class="at">destfile =</span> full_path, <span class="at">mode =</span> <span class="st">"wb"</span>)</span>
-<span id="cb47-20"><a href=""></a></span>
-<span id="cb47-21"><a href=""></a>  <span class="fu">invisible</span>(full_path)</span>
-<span id="cb47-22"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div></div>
-</section>
-<section id="from-script-to-function-6" class="slide level2">
-<h2>From script to function</h2>
-<div class="columns">
-<div class="column" style="width:47%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; Let’s download the <a href="https://gadm.org"><strong>spatial boundary</strong></a> of France</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href=""></a><span class="do">## %</span></span>
-<span id="cb48-2"><a href=""></a></span>
-<span id="cb48-3"><a href=""></a><span class="do">##</span></span>
-<span id="cb48-4"><a href=""></a><span class="do">## DISTANT FILE</span></span>
-<span id="cb48-5"><a href=""></a><span class="do">##</span></span>
-<span id="cb48-6"><a href=""></a></span>
-<span id="cb48-7"><a href=""></a><span class="co"># Base URL ----</span></span>
-<span id="cb48-8"><a href=""></a>base_url <span class="ot">&lt;-</span> <span class="st">"https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/"</span></span>
-<span id="cb48-9"><a href=""></a></span>
-<span id="cb48-10"><a href=""></a><span class="co"># File name ----</span></span>
-<span id="cb48-11"><a href=""></a>file_name <span class="ot">&lt;-</span> <span class="st">"gadm41_FRA.gpkg"</span></span>
-<span id="cb48-12"><a href=""></a></span>
-<span id="cb48-13"><a href=""></a><span class="co"># Full URL ----</span></span>
-<span id="cb48-14"><a href=""></a>(full_url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(base_url, file_name))</span>
-<span id="cb48-15"><a href=""></a><span class="co"># https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/gadm41_FRA.gpkg</span></span>
-<span id="cb48-16"><a href=""></a></span>
-<span id="cb48-17"><a href=""></a><span class="do">##</span></span>
-<span id="cb48-18"><a href=""></a><span class="do">## LOCAL FILE</span></span>
-<span id="cb48-19"><a href=""></a><span class="do">##</span></span>
-<span id="cb48-20"><a href=""></a></span>
-<span id="cb48-21"><a href=""></a><span class="co"># Destination folder ----</span></span>
-<span id="cb48-22"><a href=""></a>(dest_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>))</span>
-<span id="cb48-23"><a href=""></a><span class="co"># /home/nicolas/projects/demo/data</span></span>
-<span id="cb48-24"><a href=""></a></span>
-<span id="cb48-25"><a href=""></a><span class="co"># Destination file ----</span></span>
-<span id="cb48-26"><a href=""></a>(full_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(dest_dir, file_name))</span>
-<span id="cb48-27"><a href=""></a><span class="co"># /home/nicolas/projects/demo/data/gadm41_FRA.gpkg</span></span>
-<span id="cb48-28"><a href=""></a></span>
-<span id="cb48-29"><a href=""></a><span class="do">##</span></span>
-<span id="cb48-30"><a href=""></a><span class="do">## DOWNLOAD FILE</span></span>
-<span id="cb48-31"><a href=""></a><span class="do">##</span></span>
-<span id="cb48-32"><a href=""></a></span>
-<span id="cb48-33"><a href=""></a><span class="fu">download.file</span>(<span class="at">url =</span> full_url, <span class="at">destfile =</span> full_path, <span class="at">mode =</span> <span class="st">"wb"</span>)</span>
-<span id="cb48-34"><a href=""></a><span class="do">## %</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column" style="width:6%;">
-
-</div><div class="column" style="width:47%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; <strong>Rename ‘file_name’ argument</strong> - <code>v0.6</code></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href=""></a>download_gadm <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">country =</span> <span class="st">"FRA"</span>) {</span>
-<span id="cb49-2"><a href=""></a>    </span>
-<span id="cb49-3"><a href=""></a>  <span class="co"># Base URL ----</span></span>
-<span id="cb49-4"><a href=""></a>  base_url <span class="ot">&lt;-</span> <span class="st">"https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/"</span></span>
-<span id="cb49-5"><a href=""></a></span>
-<span id="cb49-6"><a href=""></a>  <span class="co"># File name ----</span></span>
-<span id="cb49-7"><a href=""></a>  file_name <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"gadm41_"</span>, country, <span class="st">".gpkg"</span>)</span>
-<span id="cb49-8"><a href=""></a></span>
-<span id="cb49-9"><a href=""></a>  <span class="co"># Full URL ----</span></span>
-<span id="cb49-10"><a href=""></a>  full_url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(base_url, file_name)</span>
-<span id="cb49-11"><a href=""></a></span>
-<span id="cb49-12"><a href=""></a>  <span class="co"># Destination folder ----</span></span>
-<span id="cb49-13"><a href=""></a>  dest_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>)</span>
-<span id="cb49-14"><a href=""></a></span>
-<span id="cb49-15"><a href=""></a>  <span class="co"># Destination file ----</span></span>
-<span id="cb49-16"><a href=""></a>  full_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(dest_dir, file_name)</span>
-<span id="cb49-17"><a href=""></a></span>
-<span id="cb49-18"><a href=""></a>  <span class="co"># Download file ----</span></span>
-<span id="cb49-19"><a href=""></a>  <span class="fu">download.file</span>(<span class="at">url =</span> full_url, <span class="at">destfile =</span> full_path, <span class="at">mode =</span> <span class="st">"wb"</span>)</span>
-<span id="cb49-20"><a href=""></a></span>
-<span id="cb49-21"><a href=""></a>  <span class="fu">invisible</span>(full_path)</span>
-<span id="cb49-22"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div></div>
-</section>
-<section id="from-script-to-function-7" class="slide level2">
-<h2>From script to function</h2>
-<div class="columns">
-<div class="column" style="width:47%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; Let’s download the <a href="https://gadm.org"><strong>spatial boundary</strong></a> of France</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href=""></a><span class="do">## %</span></span>
-<span id="cb50-2"><a href=""></a></span>
-<span id="cb50-3"><a href=""></a><span class="do">##</span></span>
-<span id="cb50-4"><a href=""></a><span class="do">## DISTANT FILE</span></span>
-<span id="cb50-5"><a href=""></a><span class="do">##</span></span>
-<span id="cb50-6"><a href=""></a></span>
-<span id="cb50-7"><a href=""></a><span class="co"># Base URL ----</span></span>
-<span id="cb50-8"><a href=""></a>base_url <span class="ot">&lt;-</span> <span class="st">"https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/"</span></span>
-<span id="cb50-9"><a href=""></a></span>
-<span id="cb50-10"><a href=""></a><span class="co"># File name ----</span></span>
-<span id="cb50-11"><a href=""></a>file_name <span class="ot">&lt;-</span> <span class="st">"gadm41_FRA.gpkg"</span></span>
-<span id="cb50-12"><a href=""></a></span>
-<span id="cb50-13"><a href=""></a><span class="co"># Full URL ----</span></span>
-<span id="cb50-14"><a href=""></a>(full_url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(base_url, file_name))</span>
-<span id="cb50-15"><a href=""></a><span class="co"># https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/gadm41_FRA.gpkg</span></span>
-<span id="cb50-16"><a href=""></a></span>
-<span id="cb50-17"><a href=""></a><span class="do">##</span></span>
-<span id="cb50-18"><a href=""></a><span class="do">## LOCAL FILE</span></span>
-<span id="cb50-19"><a href=""></a><span class="do">##</span></span>
-<span id="cb50-20"><a href=""></a></span>
-<span id="cb50-21"><a href=""></a><span class="co"># Destination folder ----</span></span>
-<span id="cb50-22"><a href=""></a>(dest_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>))</span>
-<span id="cb50-23"><a href=""></a><span class="co"># /home/nicolas/projects/demo/data</span></span>
-<span id="cb50-24"><a href=""></a></span>
-<span id="cb50-25"><a href=""></a><span class="co"># Destination file ----</span></span>
-<span id="cb50-26"><a href=""></a>(full_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(dest_dir, file_name))</span>
-<span id="cb50-27"><a href=""></a><span class="co"># /home/nicolas/projects/demo/data/gadm41_FRA.gpkg</span></span>
-<span id="cb50-28"><a href=""></a></span>
-<span id="cb50-29"><a href=""></a><span class="do">##</span></span>
-<span id="cb50-30"><a href=""></a><span class="do">## DOWNLOAD FILE</span></span>
-<span id="cb50-31"><a href=""></a><span class="do">##</span></span>
-<span id="cb50-32"><a href=""></a></span>
-<span id="cb50-33"><a href=""></a><span class="fu">download.file</span>(<span class="at">url =</span> full_url, <span class="at">destfile =</span> full_path, <span class="at">mode =</span> <span class="st">"wb"</span>)</span>
-<span id="cb50-34"><a href=""></a><span class="do">## %</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column" style="width:6%;">
-
-</div><div class="column" style="width:47%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; <strong>Add ‘dest_dir’ argument</strong> - <code>v0.7</code></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href=""></a>download_gadm <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
-<span id="cb51-2"><a href=""></a>  <span class="at">country =</span> <span class="st">"FRA"</span>, </span>
-<span id="cb51-3"><a href=""></a>  <span class="at">dest_dir =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>)</span>
-<span id="cb51-4"><a href=""></a>) {</span>
-<span id="cb51-5"><a href=""></a>    </span>
-<span id="cb51-6"><a href=""></a>  <span class="co"># Base URL ----</span></span>
-<span id="cb51-7"><a href=""></a>  base_url <span class="ot">&lt;-</span> <span class="st">"https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/"</span></span>
-<span id="cb51-8"><a href=""></a></span>
-<span id="cb51-9"><a href=""></a>  <span class="co"># File name ----</span></span>
-<span id="cb51-10"><a href=""></a>  file_name <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"gadm41_"</span>, country, <span class="st">".gpkg"</span>)</span>
-<span id="cb51-11"><a href=""></a></span>
-<span id="cb51-12"><a href=""></a>  <span class="co"># Full URL ----</span></span>
-<span id="cb51-13"><a href=""></a>  full_url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(base_url, file_name)</span>
-<span id="cb51-14"><a href=""></a></span>
-<span id="cb51-15"><a href=""></a>  <span class="co"># Destination file ----</span></span>
-<span id="cb51-16"><a href=""></a>  full_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(dest_dir, file_name)</span>
-<span id="cb51-17"><a href=""></a></span>
-<span id="cb51-18"><a href=""></a>  <span class="co"># Download file ----</span></span>
-<span id="cb51-19"><a href=""></a>  <span class="fu">download.file</span>(<span class="at">url =</span> full_url, <span class="at">destfile =</span> full_path, <span class="at">mode =</span> <span class="st">"wb"</span>)</span>
-<span id="cb51-20"><a href=""></a></span>
-<span id="cb51-21"><a href=""></a>  <span class="fu">invisible</span>(full_path)</span>
-<span id="cb51-22"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div></div>
-</section>
-<section id="from-script-to-function-8" class="slide level2">
-<h2>From script to function</h2>
-<div class="columns">
-<div class="column" style="width:47%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; Let’s download the <a href="https://gadm.org"><strong>spatial boundary</strong></a> of France</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href=""></a><span class="do">## %</span></span>
-<span id="cb52-2"><a href=""></a></span>
-<span id="cb52-3"><a href=""></a><span class="do">##</span></span>
-<span id="cb52-4"><a href=""></a><span class="do">## DISTANT FILE</span></span>
-<span id="cb52-5"><a href=""></a><span class="do">##</span></span>
-<span id="cb52-6"><a href=""></a></span>
-<span id="cb52-7"><a href=""></a><span class="co"># Base URL ----</span></span>
-<span id="cb52-8"><a href=""></a>base_url <span class="ot">&lt;-</span> <span class="st">"https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/"</span></span>
-<span id="cb52-9"><a href=""></a></span>
-<span id="cb52-10"><a href=""></a><span class="co"># File name ----</span></span>
-<span id="cb52-11"><a href=""></a>file_name <span class="ot">&lt;-</span> <span class="st">"gadm41_FRA.gpkg"</span></span>
-<span id="cb52-12"><a href=""></a></span>
-<span id="cb52-13"><a href=""></a><span class="co"># Full URL ----</span></span>
-<span id="cb52-14"><a href=""></a>(full_url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(base_url, file_name))</span>
-<span id="cb52-15"><a href=""></a><span class="co"># https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/gadm41_FRA.gpkg</span></span>
-<span id="cb52-16"><a href=""></a></span>
-<span id="cb52-17"><a href=""></a><span class="do">##</span></span>
-<span id="cb52-18"><a href=""></a><span class="do">## LOCAL FILE</span></span>
-<span id="cb52-19"><a href=""></a><span class="do">##</span></span>
-<span id="cb52-20"><a href=""></a></span>
-<span id="cb52-21"><a href=""></a><span class="co"># Destination folder ----</span></span>
-<span id="cb52-22"><a href=""></a>(dest_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>))</span>
-<span id="cb52-23"><a href=""></a><span class="co"># /home/nicolas/projects/demo/data</span></span>
-<span id="cb52-24"><a href=""></a></span>
-<span id="cb52-25"><a href=""></a><span class="co"># Destination file ----</span></span>
-<span id="cb52-26"><a href=""></a>(full_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(dest_dir, file_name))</span>
-<span id="cb52-27"><a href=""></a><span class="co"># /home/nicolas/projects/demo/data/gadm41_FRA.gpkg</span></span>
-<span id="cb52-28"><a href=""></a></span>
-<span id="cb52-29"><a href=""></a><span class="do">##</span></span>
-<span id="cb52-30"><a href=""></a><span class="do">## DOWNLOAD FILE</span></span>
-<span id="cb52-31"><a href=""></a><span class="do">##</span></span>
-<span id="cb52-32"><a href=""></a></span>
-<span id="cb52-33"><a href=""></a><span class="fu">download.file</span>(<span class="at">url =</span> full_url, <span class="at">destfile =</span> full_path, <span class="at">mode =</span> <span class="st">"wb"</span>)</span>
-<span id="cb52-34"><a href=""></a><span class="do">## %</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column" style="width:6%;">
-
-</div><div class="column" style="width:47%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; <strong>Add ‘dest_dir’ argument</strong> - <code>v0.7</code></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href=""></a>download_gadm <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
-<span id="cb53-2"><a href=""></a>  <span class="at">country =</span> <span class="st">"FRA"</span>, </span>
-<span id="cb53-3"><a href=""></a>  <span class="at">dest_dir =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>)</span>
-<span id="cb53-4"><a href=""></a>) {</span>
-<span id="cb53-5"><a href=""></a>    </span>
-<span id="cb53-6"><a href=""></a>  <span class="co"># Base URL ----</span></span>
-<span id="cb53-7"><a href=""></a>  base_url <span class="ot">&lt;-</span> <span class="st">"https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/"</span></span>
-<span id="cb53-8"><a href=""></a></span>
-<span id="cb53-9"><a href=""></a>  <span class="co"># File name ----</span></span>
-<span id="cb53-10"><a href=""></a>  file_name <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"gadm41_"</span>, country, <span class="st">".gpkg"</span>)</span>
-<span id="cb53-11"><a href=""></a></span>
-<span id="cb53-12"><a href=""></a>  <span class="co"># Full URL ----</span></span>
-<span id="cb53-13"><a href=""></a>  full_url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(base_url, file_name)</span>
-<span id="cb53-14"><a href=""></a></span>
-<span id="cb53-15"><a href=""></a>  <span class="co"># Destination file ----</span></span>
-<span id="cb53-16"><a href=""></a>  full_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(dest_dir, file_name)</span>
-<span id="cb53-17"><a href=""></a></span>
-<span id="cb53-18"><a href=""></a>  <span class="co"># Download file ----</span></span>
-<span id="cb53-19"><a href=""></a>  <span class="fu">download.file</span>(<span class="at">url =</span> full_url, <span class="at">destfile =</span> full_path, <span class="at">mode =</span> <span class="st">"wb"</span>)</span>
-<span id="cb53-20"><a href=""></a></span>
-<span id="cb53-21"><a href=""></a>  <span class="fu">invisible</span>(full_path)</span>
-<span id="cb53-22"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p><br></p>
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; <strong>Easy to use</strong> now!</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href=""></a><span class="fu">download_gadm</span>(<span class="at">country =</span> <span class="st">"FRA"</span>)</span>
-<span id="cb54-2"><a href=""></a><span class="fu">download_gadm</span>(<span class="at">country =</span> <span class="st">"MEX"</span>, <span class="at">dest_dir =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>, <span class="st">"gadm"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div></div>
-</section>
-<section id="from-script-to-function-9" class="slide level2">
-<h2>From script to function</h2>
-<div class="columns">
-<div class="column" style="width:47%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; Let’s download the <a href="https://gadm.org"><strong>spatial boundary</strong></a> of France</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href=""></a><span class="do">## %</span></span>
-<span id="cb55-2"><a href=""></a></span>
-<span id="cb55-3"><a href=""></a><span class="do">##</span></span>
-<span id="cb55-4"><a href=""></a><span class="do">## DISTANT FILE</span></span>
-<span id="cb55-5"><a href=""></a><span class="do">##</span></span>
-<span id="cb55-6"><a href=""></a></span>
-<span id="cb55-7"><a href=""></a><span class="co"># Base URL ----</span></span>
-<span id="cb55-8"><a href=""></a>base_url <span class="ot">&lt;-</span> <span class="st">"https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/"</span></span>
-<span id="cb55-9"><a href=""></a></span>
-<span id="cb55-10"><a href=""></a><span class="co"># File name ----</span></span>
-<span id="cb55-11"><a href=""></a>file_name <span class="ot">&lt;-</span> <span class="st">"gadm41_FRA.gpkg"</span></span>
-<span id="cb55-12"><a href=""></a></span>
-<span id="cb55-13"><a href=""></a><span class="co"># Full URL ----</span></span>
-<span id="cb55-14"><a href=""></a>(full_url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(base_url, file_name))</span>
-<span id="cb55-15"><a href=""></a><span class="co"># https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/gadm41_FRA.gpkg</span></span>
-<span id="cb55-16"><a href=""></a></span>
-<span id="cb55-17"><a href=""></a><span class="do">##</span></span>
-<span id="cb55-18"><a href=""></a><span class="do">## LOCAL FILE</span></span>
-<span id="cb55-19"><a href=""></a><span class="do">##</span></span>
-<span id="cb55-20"><a href=""></a></span>
-<span id="cb55-21"><a href=""></a><span class="co"># Destination folder ----</span></span>
-<span id="cb55-22"><a href=""></a>(dest_dir <span class="ot">&lt;-</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>))</span>
-<span id="cb55-23"><a href=""></a><span class="co"># /home/nicolas/projects/demo/data</span></span>
-<span id="cb55-24"><a href=""></a></span>
-<span id="cb55-25"><a href=""></a><span class="co"># Destination file ----</span></span>
-<span id="cb55-26"><a href=""></a>(full_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(dest_dir, file_name))</span>
-<span id="cb55-27"><a href=""></a><span class="co"># /home/nicolas/projects/demo/data/gadm41_FRA.gpkg</span></span>
-<span id="cb55-28"><a href=""></a></span>
-<span id="cb55-29"><a href=""></a><span class="do">##</span></span>
-<span id="cb55-30"><a href=""></a><span class="do">## DOWNLOAD FILE</span></span>
-<span id="cb55-31"><a href=""></a><span class="do">##</span></span>
-<span id="cb55-32"><a href=""></a></span>
-<span id="cb55-33"><a href=""></a><span class="fu">download.file</span>(<span class="at">url =</span> full_url, <span class="at">destfile =</span> full_path, <span class="at">mode =</span> <span class="st">"wb"</span>)</span>
-<span id="cb55-34"><a href=""></a><span class="do">## %</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-</div><div class="column" style="width:6%;">
-
-</div><div class="column" style="width:47%;">
-<p><i class="fa-solid fa-circle-arrow-right" aria-label="circle-arrow-right"></i>&nbsp; <strong>Add ‘dest_dir’ argument</strong> - <code>v0.7</code></p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href=""></a>download_gadm <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
-<span id="cb56-2"><a href=""></a>  <span class="at">country =</span> <span class="st">"FRA"</span>, </span>
-<span id="cb56-3"><a href=""></a>  <span class="at">dest_dir =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data"</span>)</span>
-<span id="cb56-4"><a href=""></a>) {</span>
-<span id="cb56-5"><a href=""></a>    </span>
-<span id="cb56-6"><a href=""></a>  <span class="co"># Base URL ----</span></span>
-<span id="cb56-7"><a href=""></a>  base_url <span class="ot">&lt;-</span> <span class="st">"https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/"</span></span>
-<span id="cb56-8"><a href=""></a></span>
-<span id="cb56-9"><a href=""></a>  <span class="co"># File name ----</span></span>
-<span id="cb56-10"><a href=""></a>  file_name <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"gadm41_"</span>, country, <span class="st">".gpkg"</span>)</span>
-<span id="cb56-11"><a href=""></a></span>
-<span id="cb56-12"><a href=""></a>  <span class="co"># Full URL ----</span></span>
-<span id="cb56-13"><a href=""></a>  full_url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(base_url, file_name)</span>
-<span id="cb56-14"><a href=""></a></span>
-<span id="cb56-15"><a href=""></a>  <span class="co"># Destination file ----</span></span>
-<span id="cb56-16"><a href=""></a>  full_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(dest_dir, file_name)</span>
-<span id="cb56-17"><a href=""></a></span>
-<span id="cb56-18"><a href=""></a>  <span class="co"># Download file ----</span></span>
-<span id="cb56-19"><a href=""></a>  <span class="fu">download.file</span>(<span class="at">url =</span> full_url, <span class="at">destfile =</span> full_path, <span class="at">mode =</span> <span class="st">"wb"</span>)</span>
-<span id="cb56-20"><a href=""></a></span>
-<span id="cb56-21"><a href=""></a>  <span class="fu">invisible</span>(full_path)</span>
-<span id="cb56-22"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p><br></p>
-<div class="small">
-<p><i class="fa-solid fa-lightbulb" aria-label="lightbulb"></i>&nbsp; To go further:</p>
-<ul>
-<li>Assertive programming (i.e.&nbsp;check arguments)</li>
-<li>Create destination directory (or throw an error)</li>
-<li>Check if file has been already downloaded</li>
-<li>Check for valid URL, …</li>
-</ul>
-</div>
-</div></div>
-</section>
-<section id="documenting-a-function" class="slide level2">
+<section id="documenting-a-function" class="slide level2 size-sm">
 <h2>Documenting a function</h2>
-<div class="columns">
-<div class="column" style="width:25%;">
-<p><img data-src="images/roxygen2-logo.png" style="width:70.0%"></p>
-</div><div class="column" style="width:75%;">
-
-</div></div>
-</section>
-<section id="documenting-a-function-1" class="slide level2">
-<h2>Documenting a function</h2>
-<div class="columns">
-<div class="column" style="width:25%;">
-<p><img data-src="images/roxygen2-logo.png" style="width:70.0%"></p>
-</div><div class="column" style="width:75%;">
+<p><strong>Why document functions?</strong></p>
 <ul>
-<li>Specially-structured <strong>comments preceding</strong> each function definition</li>
-<li><strong>Lightweight syntax</strong> easy to write and to read</li>
-<li>Syntax: <strong><code>#' @field value</code></strong></li>
-<li>Keep function definition and documentation in the same file</li>
-<li>Automatically write <code>.Rd</code> files (in <code>man/</code>) and <code>NAMESPACE</code> w/ <code>devtools::document()</code></li>
+<li><p>Explain the <strong>purpose</strong> of a function</p></li>
+<li><p>Describe its <strong>arguments</strong> and <strong>return</strong> values</p></li>
+<li><p>Provide usage <strong>examples</strong></p></li>
+<li><p>Improve <strong>readability</strong> and maintainability</p></li>
 </ul>
-<p><i class="fa-solid fa-circle-right" aria-label="circle-right"></i> &nbsp;Get started w/ <code>roxygen2</code>: <a href="https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html"><strong>here</strong></a></p>
-</div></div>
-<div class="fragment">
-<div class="columns">
-<div class="column" style="width:50%;">
-
-</div><div class="column" style="width:50%;">
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href=""></a><span class="co">#' Compute the arithmetic mean</span></span>
-<span id="cb57-2"><a href=""></a><span class="co">#'</span></span>
-<span id="cb57-3"><a href=""></a><span class="co">#' @description</span></span>
-<span id="cb57-4"><a href=""></a><span class="co">#' This function computes the arithmetic mean of a numeric variable.</span></span>
-<span id="cb57-5"><a href=""></a><span class="co">#'</span></span>
-<span id="cb57-6"><a href=""></a><span class="co">#' @param x a `numeric` vector</span></span>
-<span id="cb57-7"><a href=""></a><span class="co">#'</span></span>
-<span id="cb57-8"><a href=""></a><span class="co">#' @return A `numeric` value representing the arithmetic mean of `x`.</span></span>
-<span id="cb57-9"><a href=""></a><span class="co">#'</span></span>
-<span id="cb57-10"><a href=""></a><span class="co">#' @export</span></span>
-<span id="cb57-11"><a href=""></a><span class="co">#'</span></span>
-<span id="cb57-12"><a href=""></a><span class="co">#' @examples</span></span>
-<span id="cb57-13"><a href=""></a><span class="co">#' x &lt;- 1:10</span></span>
-<span id="cb57-14"><a href=""></a><span class="co">#' arithmetic_mean(x)</span></span>
-<span id="cb57-15"><a href=""></a></span>
-<span id="cb57-16"><a href=""></a>arithmetic_mean <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb57-17"><a href=""></a>  </span>
-<span id="cb57-18"><a href=""></a>  <span class="fu">sum</span>(x) <span class="sc">/</span> <span class="fu">length</span>(x)</span>
-<span id="cb57-19"><a href=""></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="roxygen2" class="slide level2 size-sm">
+<h2>roxygen2</h2>
+<div class="grid">
+<div class="g-col-6">
+<p><img data-src="images/roxygen2-logo.png" style="width:50.0%"></p>
 </div>
-</div></div>
+<div class="g-col-6" style="margin-top: 1em;">
+<ul>
+<li><p>An R package used to document functions</p></li>
+<li><p>Documentation is written directly <strong>above</strong> function definitions</p></li>
+<li><p>Syntax: <strong><code>#' @field value</code></strong></p></li>
+</ul>
+<div class="fragment">
+<p><span class="vspace-2xs"></span></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="" aria-label="1"></a><span class="co">#' Add two values</span></span>
+<span id="cb10-2"><a href="" aria-label="2"></a><span class="co">#'</span></span>
+<span id="cb10-3"><a href="" aria-label="3"></a><span class="co">#' Adds two numeric values and returns their sum.</span></span>
+<span id="cb10-4"><a href="" aria-label="4"></a><span class="co">#'</span></span>
+<span id="cb10-5"><a href="" aria-label="5"></a><span class="co">#' @param a A numeric value of length 1.</span></span>
+<span id="cb10-6"><a href="" aria-label="6"></a><span class="co">#' @param b A numeric value of length 1.</span></span>
+<span id="cb10-7"><a href="" aria-label="7"></a><span class="co">#'</span></span>
+<span id="cb10-8"><a href="" aria-label="8"></a><span class="co">#' @return A numeric value representing the sum </span></span>
+<span id="cb10-9"><a href="" aria-label="9"></a><span class="co">#'   of `a` and `b`.</span></span>
+<span id="cb10-10"><a href="" aria-label="10"></a><span class="co">#'</span></span>
+<span id="cb10-11"><a href="" aria-label="11"></a><span class="co">#' @examples</span></span>
+<span id="cb10-12"><a href="" aria-label="12"></a><span class="co">#' add_two_values(2, 3)</span></span>
+<span id="cb10-13"><a href="" aria-label="13"></a></span>
+<span id="cb10-14"><a href="" aria-label="14"></a>add_two_values <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b) {</span>
+<span id="cb10-15"><a href="" aria-label="15"></a>  a <span class="sc">+</span> b</span>
+<span id="cb10-16"><a href="" aria-label="16"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
 </div>
 </section>
-<section id="resources" class="slide level2">
+<section id="resources" class="slide level2 size-sm">
 <h2>Resources</h2>
 <ul>
-<li>Wickham H (2023) <strong>Chap. 25: Functions</strong>. In <em>R for Data Science</em>, (2<sup>nd</sup> ed.). <a href="https://r4ds.hadley.nz/functions.html">Online book</a></li>
-<li>Wickham H (2019) <strong>Chap. 6: Functions</strong>. In <em>Advanced R</em>, (2<sup>nd</sup> ed.). <a href="https://adv-r.hadley.nz/functions.html">Online book</a></li>
-<li>Wickham H &amp; Bryan J (2023) <strong>Chap. 16: Function documentation</strong>. In <em>R Packages</em>, (2<sup>nd</sup> ed.). <a href="https://r-pkgs.org/man.html">Online book</a></li>
+<li>Wickham H (2023) <strong>Chap. 25: Functions</strong>. In <em>R for Data Science</em>, (2nd ed.). <a href="https://r4ds.hadley.nz/functions.html">Online book</a></li>
+<li>Wickham H (2019) <strong>Chap. 6: Functions</strong>. In <em>Advanced R</em>, (2nd ed.). <a href="https://adv-r.hadley.nz/functions.html">Online book</a></li>
+<li>Wickham H &amp; Bryan J (2023) <strong>Chap. 16: Function documentation</strong>. In <em>R Packages</em>, (2nd ed.). <a href="https://r-pkgs.org/man.html">Online book</a></li>
 </ul>
+</section>
+<section id="practice" class="title-slide slide level1 center">
+<h1>Practice</h1>
 
-</section></section>
+</section>
+
 
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <p><img src="images/logo-affiliation.png" class="slide-logo"></p>
 <div class="footer footer-default">
-<p><i class="fa-brands fa-github" aria-label="github"></i> &nbsp;<a href="https://github.com/rdatatoolbox/r-functions"><code>rdatatoolbox/r-functions</code></a> &nbsp; • &nbsp; <i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> <i class="fa-brands fa-creative-commons-by" aria-label="creative-commons-by"></i> &nbsp;<a href="https://creativecommons.org/licenses/by/4.0/deed.en"><code>cc-by-4.0</code></a></p>
+<p><i class="fa-brands fa-github" aria-label="github"></i> <a href="https://github.com/rdatatoolbox/course-functions"><code>rdatatoolbox/course-functions</code></a> &nbsp; • &nbsp; <i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> <i class="fa-brands fa-creative-commons-by" aria-label="creative-commons-by"></i> <a href="https://creativecommons.org/licenses/by/4.0/deed.en"><code>CC BY 4.0</code></a></p>
 </div>
 </div></div>
 
@@ -1850,7 +574,6 @@ Author name<br/>
   <script src="index_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
   <script src="index_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
   <script src="index_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="index_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
   <script src="index_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
@@ -1872,9 +595,8 @@ Author name<br/>
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'chalkboard': {"buttons":true},
-'smaller': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"\u003ci class=\"fas fa-gear\">\u003c/i>","content":"\u003cul class=\"slide-menu-items\">\n\u003cli class=\"slide-tool-item active\" data-item=\"0\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\">\u003ckbd>f\u003c/kbd> Fullscreen\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"1\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\">\u003ckbd>s\u003c/kbd> Speaker View\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"2\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\">\u003ckbd>o\u003c/kbd> Slide Overview\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"3\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\">\u003ckbd>e\u003c/kbd> PDF Export Mode\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"4\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\">\u003ckbd>r\u003c/kbd> Scroll View Mode\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"5\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\">\u003ckbd>?\u003c/kbd> Keyboard Help\u003c/a>\u003c/li>\n\u003c/ul>"}],"openButton":true,"openButtonLabel":"Slide menu"},
+'smaller': false,
  
         // Display controls in the bottom right corner
         controls: false,
@@ -1891,10 +613,10 @@ Author name<br/>
         controlsBackArrows: 'faded',
 
         // Display a presentation progress bar
-        progress: true,
+        progress: false,
 
         // Display the page number of the current slide
-        slideNumber: false,
+        slideNumber: 'c/t',
 
         // 'all', 'print', or 'speaker'
         showSlideNumber: 'all',
@@ -1910,7 +632,7 @@ Author name<br/>
         respondToHashChanges: true,
 
         // Push each slide change to the browser history
-        history: true,
+        history: false,
 
         // Enable keyboard shortcuts for navigation
         keyboard: true,
@@ -2044,7 +766,7 @@ Author name<br/>
         },
 
         // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
 
           RevealMath,
           RevealNotes,
@@ -2053,44 +775,6 @@ Author name<br/>
         ]
       });
     </script>
-    
-    <script>
-      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
-      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
-      // slide changes (different for each slide format).
-      (function () {
-        // dispatch for htmlwidgets
-        function fireSlideEnter() {
-          const event = window.document.createEvent("Event");
-          event.initEvent("slideenter", true, true);
-          window.document.dispatchEvent(event);
-        }
-
-        function fireSlideChanged(previousSlide, currentSlide) {
-          fireSlideEnter();
-
-          // dispatch for shiny
-          if (window.jQuery) {
-            if (previousSlide) {
-              window.jQuery(previousSlide).trigger("hidden");
-            }
-            if (currentSlide) {
-              window.jQuery(currentSlide).trigger("shown");
-            }
-          }
-        }
-
-        // hookup for slidy
-        if (window.w3c_slidy) {
-          window.w3c_slidy.add_observer(function (slide_num) {
-            // slide_num starts at position 1
-            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
-          });
-        }
-
-      })();
-    </script>
-
     <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
@@ -2162,11 +846,30 @@ Author name<br/>
           var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
           var mailtoRegex = new RegExp(/^mailto:/);
             var filterRegex = new RegExp('/' + window.location.host + '/');
+          const newWindowLabel = "(opens in a new tab)";
+          const newWindowNoteId = "quarto-ext-newwindow-label";
+          // Links reference one hidden label through aria-describedby, so the
+          // announcement never changes their accessible name.
+          var describeNewWindow = (link) => {
+            if (!window.document.getElementById(newWindowNoteId)) {
+              var newWindowNote = window.document.createElement("span");
+              newWindowNote.id = newWindowNoteId;
+              newWindowNote.hidden = true;
+              newWindowNote.textContent = newWindowLabel;
+              window.document.body.appendChild(newWindowNote);
+            }
+            var describedBy = (link.getAttribute("aria-describedby") || "").split(/\s+/).filter(Boolean);
+            if (!describedBy.includes(newWindowNoteId)) {
+              describedBy.push(newWindowNoteId);
+              link.setAttribute("aria-describedby", describedBy.join(" "));
+            }
+          }
           var isInternal = (href) => {
               return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
           }
           // Inspect non-navigation links and adorn them if external
-         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          window.quartoDecorateExternalLinks = function (root) {
+         var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
           for (var i=0; i<links.length; i++) {
             const link = links[i];
             if (!isInternal(link.href)) {
@@ -2175,8 +878,75 @@ Author name<br/>
               if (link.dataset.originalHref !== undefined) {
                 link.href = link.dataset.originalHref;
               }
+                // target, if specified
+                link.setAttribute("target", "_blank");
+                if (link.getAttribute("rel") === null) {
+                  link.setAttribute("rel", "noopener");
+                }
+                describeNewWindow(link);
+              if (!link.classList.contains('no-external-icon')) {
+              }
             }
           }
+          };
+          window.quartoDecorateExternalLinks(window.document);
+        // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+        // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+        const hideOnEscAndFocusOut = {
+          name: 'hideOnEscAndFocusOut',
+          defaultValue: true,
+          fn(instance) {
+            const dismiss = () => {
+              // A show scheduled by the trigger delay would otherwise reopen it
+              instance.clearDelayTimeouts();
+              instance.hide();
+            };
+            const onKeyDown = (event) => {
+              if (event.key !== 'Escape') {
+                return;
+              }
+              // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+              // except an open reveal.js slide menu, which Esc should close too.
+              // The menu handles keys only when its keyboard option is on.
+              const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+                window.Reveal.getConfig().menu?.keyboard !== false;
+              if (!menuHandlesEsc) {
+                event.stopPropagation();
+              }
+              if (instance.popper.contains(window.document.activeElement)) {
+                // Disabled while refocusing so the focus trigger does not reopen it
+                instance.disable();
+                instance.reference.focus();
+                instance.enable();
+              }
+              dismiss();
+            };
+            const onFocusOut = (event) => {
+              const target = event.relatedTarget;
+              if (target && !instance.reference.contains(target) &&
+                  !instance.popper.contains(target)) {
+                dismiss();
+              }
+            };
+            // On the trigger too: a click trigger (code-annotations: select) has no
+            // blur handling. Attached for the instance's lifetime so leaving the
+            // trigger also cancels a show still pending on the trigger delay.
+            instance.reference.addEventListener('focusout', onFocusOut);
+            return {
+              onShow() {
+                window.document.addEventListener('keydown', onKeyDown, true);
+                instance.popper.addEventListener('focusout', onFocusOut);
+              },
+              onHide() {
+                window.document.removeEventListener('keydown', onKeyDown, true);
+                instance.popper.removeEventListener('focusout', onFocusOut);
+              },
+              onDestroy() {
+                instance.reference.removeEventListener('focusout', onFocusOut);
+              },
+            };
+          },
+        };
         function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
           const config = {
             allowHTML: true,
@@ -2190,6 +960,7 @@ Author name<br/>
             interactiveBorder: 10,
             theme: 'light-border',
             placement: 'bottom-start',
+            plugins: [hideOnEscAndFocusOut],
           };
           if (contentFn) {
             config.content = contentFn;
