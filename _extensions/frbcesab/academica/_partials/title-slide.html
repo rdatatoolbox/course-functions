@@ -1,0 +1,121 @@
+<section id="$idprefix$$title-slide$" class="title-slide-custom">
+
+  <div class="title-layout">
+
+    <!-- LEFT: LOGO -->
+    <div class="title-logo">
+      <img
+        src="$if(image)$$image$$else$_extensions/academica/assets/default-image.png$endif$"
+        alt="Presentation logo">
+    </div>
+
+    <!-- RIGHT: CONTENT -->
+    <div class="title-content">
+
+      <header class="title-header">
+        <h1>$title$</h1>
+
+        $if(subtitle)$
+        <p class="title-subtitle">$subtitle$</p>
+        $endif$
+      </header>
+
+      <div class="title-separator"></div>
+
+      $if(date)$
+      <div class="title-date">
+        $date$
+      </div>
+      $endif$
+
+      <!-- AUTHORS -->
+      <div class="title-authors">
+
+        $for(creators)$
+
+        <div class="title-author">
+
+          <div class="author-name">
+            <span>$creators.name$</span>
+
+            $if(creators.socials.orcid)$
+            <a
+              class="author-orcid"
+              href="https://orcid.org/$creators.socials.orcid$"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="ORCID profile">
+              <img
+                src="$assets.orcid$"
+                alt="ORCID">
+            </a>
+            $endif$
+          </div>
+
+          <!-- AUTHOR SOCIALS -->
+          <div class="author-socials">
+
+            $if(creators.socials.email)$
+            <a href="mailto:$creators.socials.email$" aria-label="Email">
+              <i class="fa-solid fa-envelope"></i>
+            </a>
+            $endif$
+            
+            $if(creators.socials.website)$
+            <a href="$creators.socials.website$" aria-label="Website">
+              <i class="fa-solid fa-globe"></i>
+            </a>
+            $endif$
+
+            $if(creators.socials.github)$
+            <a href="$creators.socials.github$" aria-label="GitHub">
+              <i class="fa-brands fa-github"></i>
+            </a>
+            $endif$
+
+            $if(creators.socials.scholar)$
+            <a href="$creators.socials.scholar$" aria-label="Google Scholar">
+              <i class="fa-brands fa-google-scholar"></i>
+            </a>
+            $endif$
+
+          </div>
+
+          $if(creators.position)$
+          <div class="author-role">
+            $creators.position$
+          </div>
+          $endif$
+
+          <!-- AFFILIATIONS -->
+          <div class="author-affiliations">
+
+            $for(creators.affiliations)$
+            <div class="author-affiliation">
+              <span>$creators.affiliations.name$</span>
+              
+              $if(creators.affiliations.url)$
+              <a class="affiliation-website"
+                href="$creators.affiliations.url$"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Affiliation website"><i class="fa-solid fa-up-right-from-square"></i>
+              </a>
+              $endif$
+
+            </div>
+            $endfor$
+
+          </div>
+
+        </div>
+
+        $endfor$
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>

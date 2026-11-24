@@ -22,8 +22,13 @@ inst/doc
 .Rbuildignore
 
 # Quarto files ----
-index.html
-index_files/
+*.html
+*_files/
+
 sections/*.html
 sections/*_files
 /.quarto/
+
+**/*.quarto_ipynb
+
+!_extensions/frbcesab/academica/_partials/*.html
