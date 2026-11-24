@@ -4,9 +4,9 @@
   <br>
   <img src="images/readme/logo-readme.png" alt="Logo" width="200">
   <br>
-  Code refactoring
+  Writing R functions
   <br>
-  Writing and documenting R functions
+  Refactoring scripts into modular and reusable code
   <br>
 </h1>
 
@@ -63,7 +63,10 @@
 
 ## Overview
 
-This repository contains files used to generate the online presentation [Code refactoring](https://rdatatoolbox.github.io/course-functions) based on [Quarto](https://quarto.org/) and the [RevealJS](https://quarto.org/docs/presentations/revealjs/) framework.
+This repository contains files used to generate the online presentation 
+[Writing R functions](https://rdatatoolbox.github.io/course-functions) 
+based on [Quarto](https://quarto.org/) and the 
+[RevealJS](https://quarto.org/docs/presentations/revealjs/) framework.
 
 
 ## Usage
@@ -82,7 +85,7 @@ To understand the file organisation of this repository, please read this [Wiki](
 
 ## Citation
 
-Casajus N (2026) _Code refactoring: Writing and documenting R functions_. Online presentation available at <https://github.com/rdatatoolbox/course-functions/>.
+Casajus N (2026) _Writing R functions: Refactoring scripts into modular and reusable code_. Online presentation available at <https://github.com/rdatatoolbox/course-functions/>.
 
 
 ## Contributing
